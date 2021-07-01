@@ -1,7 +1,6 @@
 package eu.epptec.autostop.controllers;
 
-import eu.epptec.autostop.model.Car;
-import org.springframework.data.domain.Pageable;
+import eu.epptec.autostop.model.Ride;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
@@ -11,12 +10,12 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
-public class CarModelAssembler implements RepresentationModelAssembler<Car, EntityModel<Car>> {
+public class RideModelAssembler implements RepresentationModelAssembler<Ride, EntityModel<Ride>> {
     @Override
-    public EntityModel<Car> toModel (Car car) {
+    public EntityModel<Ride> toModel (Ride ride) {
         return EntityModel.of(
-                car,
-                WebMvcLinkBuilder.linkTo(methodOn(CarController.class).findById(car.getId())).withSelfRel(),
-                linkTo(methodOn(CarController.class).findAll(car.getUser().getId(), car)).withRel("cars"));
+                ride,
+                WebMvcLinkBuilder.linkTo(methodOn(UserController.class).findById(ride.getId())).withSelfRel(),
+                linkTo(methodOn(UserController.class).findAll()).withRel("rides"));
     }
 }

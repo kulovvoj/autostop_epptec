@@ -33,12 +33,8 @@ public class RideService implements IRideService {
     public Ride replace(Ride ride, Long id) {
         return rideRepository.findById(id)
                 .map(oldRide -> {
-                    oldRide.setCapacity(ride.getCapacity());
                     oldRide.setCar(ride.getCar());
-                    oldRide.setT(ride.getType());
-                    oldRide.setProductionYear(ride.getProductionYear());
                     oldRide.setCapacity(ride.getCapacity());
-                    oldRide.setUser(ride.getUser());
                     return rideRepository.save(ride);
                 })
                 .orElseGet(() -> {

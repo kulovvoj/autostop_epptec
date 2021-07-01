@@ -3,7 +3,10 @@ package eu.epptec.autostop.services;
 import eu.epptec.autostop.exceptions.CarNotFoundException;
 import eu.epptec.autostop.model.Car;
 import eu.epptec.autostop.repositories.CarRepository;
+import eu.epptec.autostop.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +16,9 @@ public class CarService implements ICarService {
     @Autowired
     private CarRepository carRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @Override
     public Car findById(Long id) {
         return carRepository.findById(id)
@@ -20,13 +26,14 @@ public class CarService implements ICarService {
     }
 
     @Override
-    public Car save(Car car) {
+    public Car save(Car car, Long userId) {
+        car.setUser(userRepository.getById(userId));
         return carRepository.save(car);
     }
 
     @Override
-    public List<Car> findAll() {
-        return carRepository.findAll();
+    public Page<Car> findAll(Long userId, Pageable pageable) {
+        return carRepository.findByUserId(userId, pageable);
     }
 
     @Override
