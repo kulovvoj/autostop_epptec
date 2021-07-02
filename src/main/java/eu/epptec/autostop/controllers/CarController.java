@@ -5,9 +5,12 @@ import eu.epptec.autostop.model.Car;
 import eu.epptec.autostop.services.ICarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +30,10 @@ public class CarController {
     @Autowired
     private CarModelAssembler assembler;
 
-    @PostMapping(consumes = "application/json", produces = "application/json")
+    @Autowired
+    private PagedResourcesAssembler<Car> pagedResourcesAssembler;
+
+    @PostMapping()
     EntityModel<Car> addCar(@RequestBody Car car, @PathVariable Long userId) {
         car = carService.save(car, userId);
 
@@ -35,14 +41,10 @@ public class CarController {
     }
 
     @GetMapping()
-    CollectionModel<EntityModel<Car>> findAll(@PathVariable Long userId, Pageable pageable) {
-        List<EntityModel<Car>> cars = carService.findAll(userId, pageable)
-                .stream()
-                .map(car -> assembler.toModel(car))
-                .collect(Collectors.toList());
+    PagedModel<EntityModel<Car>> findAll(@PathVariable Long userId, Pageable pageable) {
+        Page<Car> cars = carService.findAll(userId, pageable);
 
-        return CollectionModel.of(cars,
-                linkTo(methodOn(CarController.class).findAll(userId, pageable)).withSelfRel());
+        return pagedResourcesAssembler.toModel(cars, assembler);
     }
 
     @GetMapping("/{carId}")

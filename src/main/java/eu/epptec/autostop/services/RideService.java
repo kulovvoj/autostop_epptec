@@ -4,9 +4,9 @@ import eu.epptec.autostop.exceptions.RideNotFoundException;
 import eu.epptec.autostop.model.Ride;
 import eu.epptec.autostop.repositories.RideRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class RideService implements IRideService {
@@ -25,8 +25,9 @@ public class RideService implements IRideService {
     }
 
     @Override
-    public List<Ride> findAll() {
-        return rideRepository.findAll();
+    public Page<Ride> findPastDriverRides(Long userId, Pageable pageable) {
+
+        return rideRepository.findAll(pageable);
     }
 
     @Override

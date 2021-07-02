@@ -8,6 +8,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
+import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -24,7 +25,7 @@ public class Destination {
     @Column(name = "price")
     private int price;
 
-    @OneToOne
+    @OneToOne(cascade = ALL)
     @JoinColumn(name = "id_address")
     private Address address;
 
@@ -37,6 +38,26 @@ public class Destination {
 
     @OneToMany(mappedBy = "to")
     private List<Passenger> passengersLeaving;
+
+    public Destination() {
+    }
+
+    public Destination(Timestamp departureTime, int price, Address address, Ride ride) {
+        this.departureTime = departureTime;
+        this.price = price;
+        this.address = address;
+        this.ride = ride;
+    }
+
+    public Destination(Long id, Timestamp departureTime, int price, Address address, Ride ride, List<Passenger> passengersEntering, List<Passenger> passengersLeaving) {
+        this.id = id;
+        this.departureTime = departureTime;
+        this.price = price;
+        this.address = address;
+        this.ride = ride;
+        this.passengersEntering = passengersEntering;
+        this.passengersLeaving = passengersLeaving;
+    }
 
     public Long getId() {
         return id;

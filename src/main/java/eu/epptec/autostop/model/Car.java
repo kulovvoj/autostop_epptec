@@ -1,7 +1,5 @@
 package eu.epptec.autostop.model;
 
-import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -36,6 +34,29 @@ public class Car {
 
     @OneToMany(mappedBy = "car")
     private List<Ride> rides;
+
+    public Car() {
+    }
+
+    public Car(String brand, String model, String type, int productionYear, int capacity, User user) {
+        this.brand = brand;
+        this.model = model;
+        this.type = type;
+        this.productionYear = productionYear;
+        this.capacity = capacity;
+        this.user = user;
+    }
+
+    public Car(Long id, String brand, String model, String type, int productionYear, int capacity, User user, List<Ride> rides) {
+        this.id = id;
+        this.brand = brand;
+        this.model = model;
+        this.type = type;
+        this.productionYear = productionYear;
+        this.capacity = capacity;
+        this.user = user;
+        this.rides = rides;
+    }
 
     public Long getId() {
         return id;

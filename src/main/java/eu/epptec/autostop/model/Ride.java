@@ -26,6 +26,21 @@ public class Ride {
     @JoinColumn(name = "id_car")
     private Car car;
 
+    public Ride() {
+    }
+
+    public Ride(int capacity, Car car) {
+        this.capacity = capacity;
+        this.car = car;
+    }
+
+    public Ride(Long id, int capacity, List<Destination> destinations, Car car) {
+        this.id = id;
+        this.capacity = capacity;
+        this.destinations = destinations;
+        this.car = car;
+    }
+
     public Long getId() {
         return id;
     }

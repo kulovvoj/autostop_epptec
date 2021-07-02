@@ -1,7 +1,5 @@
 package eu.epptec.autostop.model;
 
-import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
 
 import static javax.persistence.GenerationType.IDENTITY;
@@ -24,13 +22,34 @@ public class Address {
     private String street;
 
     @Column(name = "lr_number")
-    private int lrNumber;
+    private Integer lrNumber;
 
     @Column(name = "house_number")
-    private int houseNumber;
+    private Integer houseNumber;
 
     @OneToOne(mappedBy = "address")
     private Destination destination;
+
+    public Address() {
+    }
+
+    public Address(String city, String zipCode, String street, Integer lrNumber, Integer houseNumber) {
+        this.city = city;
+        this.zipCode = zipCode;
+        this.street = street;
+        this.lrNumber = lrNumber;
+        this.houseNumber = houseNumber;
+    }
+
+    public Address(Long id, String city, String zipCode, String street, Integer lrNumber, Integer houseNumber, Destination destination) {
+        this.id = id;
+        this.city = city;
+        this.zipCode = zipCode;
+        this.street = street;
+        this.lrNumber = lrNumber;
+        this.houseNumber = houseNumber;
+        this.destination = destination;
+    }
 
     public Long getId() {
         return id;
@@ -64,19 +83,19 @@ public class Address {
         this.street = street;
     }
 
-    public int getLrNumber() {
+    public Integer getLrNumber() {
         return lrNumber;
     }
 
-    public void setLrNumber(int lrNumber) {
+    public void setLrNumber(Integer lrNumber) {
         this.lrNumber = lrNumber;
     }
 
-    public int getHouseNumber() {
+    public Integer getHouseNumber() {
         return houseNumber;
     }
 
-    public void setHouseNumber(int houseNumber) {
+    public void setHouseNumber(Integer houseNumber) {
         this.houseNumber = houseNumber;
     }
 
