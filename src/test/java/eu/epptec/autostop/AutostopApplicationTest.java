@@ -8,6 +8,7 @@ import eu.epptec.autostop.model.*;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.springframework.aop.scope.ScopedProxyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -54,7 +55,7 @@ class AutostopApplicationTest {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        assert userEntityModel != null;
+        Assert.assertNotNull(userEntityModel);
         baseUrl = "http://localhost:" + randomServerPort + "/users/" + userEntityModel.getContent().getId();
         this.restTemplate.delete(baseUrl, null, String.class);
 
@@ -87,13 +88,12 @@ class AutostopApplicationTest {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        assert userEntityModel != null;
+        Assert.assertNotNull(userEntityModel);
         baseUrl = "http://localhost:" + randomServerPort + "/users/" + userEntityModel.getContent().getId() + "/cars";
         Car car = new Car("BMW", "M6", "Sedan", 2016, 5, userEntityModel.getContent());
         HttpEntity<Car> carRequest = new HttpEntity<>(car);
 
         result = this.restTemplate.postForEntity(baseUrl, carRequest, String.class);
-
         Assert.assertEquals(200, result.getStatusCodeValue());
 
         // -------------
@@ -101,28 +101,34 @@ class AutostopApplicationTest {
         // -------------
         EntityModel<Car> carEntityModel = null;
         try {
-            carEntityModel = objectMapper.readValue(result.getBody(), new TypeReference<>(){});
+            carEntityModel = objectMapper.readValue(result.getBody(), new TypeReference<EntityModel<Car>>(){});
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        assert carEntityModel != null;
-        baseUrl = "http://localhost:" + randomServerPort + "/rides";
-        Ride ride = new Ride(carEntityModel.getContent().getCapacity() - 1, carEntityModel.getContent());
+        Assert.assertNotNull(carEntityModel);
+        baseUrl = "http://localhost:" + randomServerPort +
+                "/users/" + userEntityModel.getContent().getId() +
+                "/cars/" + carEntityModel.getContent().getId() + "/rides";
+
+        Ride ride = new Ride();
+        ride.setCapacity(carEntityModel.getContent().getCapacity() - 1);
 
         HttpEntity<Ride> rideRequest = new HttpEntity<>(ride);
+
         result = this.restTemplate.postForEntity(baseUrl, rideRequest, String.class);
         Assert.assertEquals(200, result.getStatusCodeValue());
 
         // -------------
         // Add the first destination of the first ride
         // -------------
+
         EntityModel<Ride> rideEntityModel = null;
         try {
-            rideEntityModel = objectMapper.readValue(result.getBody(), new TypeReference<>(){});
+            rideEntityModel = objectMapper.readValue(result.getBody(), new TypeReference<EntityModel<Ride>>(){});
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        assert rideEntityModel != null;
+        Assert.assertNotNull(rideEntityModel);
 
         baseUrl = "http://localhost:" + randomServerPort + "/rides/" + rideEntityModel.getContent().getId() + "/destinations";
         Address address = new Address("Praha", "169 00", "Ječná", 38, null);
@@ -146,21 +152,28 @@ class AutostopApplicationTest {
         // Add the second Ride
         // -------------
         ride = new Ride(carEntityModel.getContent().getCapacity() - 2, carEntityModel.getContent());
-        baseUrl = "http://localhost:" + randomServerPort + "/rides";
+        baseUrl = "http://localhost:" + randomServerPort +
+                "/users/" + userEntityModel.getContent().getId() +
+                "/cars/" + carEntityModel.getContent().getId() +
+                "/rides";
+
+        ride = new Ride();
+        ride.setCapacity(carEntityModel.getContent().getCapacity() - 1);
 
         rideRequest = new HttpEntity<>(ride);
         result = this.restTemplate.postForEntity(baseUrl, rideRequest, String.class);
         Assert.assertEquals(200, result.getStatusCodeValue());
+
         // -------------
         // Add the first destination of the second ride
         // -------------
         rideEntityModel = null;
         try {
-            rideEntityModel = objectMapper.readValue(result.getBody(), new TypeReference<>(){});
+            rideEntityModel = objectMapper.readValue(result.getBody(), new TypeReference<EntityModel<Ride>>(){});
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        assert rideEntityModel != null;
+        Assert.assertNotNull(rideEntityModel);
 
         baseUrl = "http://localhost:" + randomServerPort + "/rides/" + rideEntityModel.getContent().getId() + "/destinations";
         address = new Address("Brno", "262 00", "Lanova", 148, 25);
@@ -169,6 +182,7 @@ class AutostopApplicationTest {
         destinationRequest = new HttpEntity<>(destination);
         result = this.restTemplate.postForEntity(baseUrl, destinationRequest, String.class);
         Assert.assertEquals(200, result.getStatusCodeValue());
+
 
         // -------------
         // Add the second destination of the second ride
@@ -194,9 +208,10 @@ class AutostopApplicationTest {
         // Request all past rides of user
         // -------------
 
-        baseUrl = "http://localhost:" + randomServerPort + "/users/" + userEntityModel.getContent().getId() + "/getPastRides";
-        result = this.restTemplate.postForEntity(baseUrl, destinationRequest, String.class);
+        baseUrl = "http://localhost:" + randomServerPort + "/users/" + userEntityModel.getContent().getId() + "/pastDriverRides";
+        result = this.restTemplate.getForEntity(baseUrl, String.class);
         Assert.assertEquals(200, result.getStatusCodeValue());
 
+        System.out.println(result.getBody());
     }
 }

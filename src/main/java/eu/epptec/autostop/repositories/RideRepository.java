@@ -14,8 +14,9 @@ public interface RideRepository extends JpaRepository<Ride, Long> {
             "FROM Destination d " +
             "JOIN d.ride r " +
             "JOIN r.car c " +
-            "WHERE c.user.id = ?1 " +
+            "JOIN c.user u " +
+            "WHERE u.id = ?1 " +
             "GROUP BY r.id " +
             "ORDER BY d.departureTime ASC")
-    Page<Ride> findUserPastRides(Long userId, Pageable pageable);
+    Page<Ride> findPastDriverRides(Long userId, Pageable pageable);
 }

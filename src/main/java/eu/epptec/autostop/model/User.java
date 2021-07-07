@@ -1,11 +1,9 @@
 package eu.epptec.autostop.model;
 
-import org.hibernate.annotations.GenericGenerator;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.List;
-
-import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Table(name="user")
@@ -28,9 +26,11 @@ public class User {
     private String phone;
 
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference(value = "userCarRef")
     private List<Car> cars;
 
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference(value = "userPassRef")
     private List<Passenger> passengerOfList;
 
     public User() {}

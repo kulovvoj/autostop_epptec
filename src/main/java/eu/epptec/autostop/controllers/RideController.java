@@ -1,22 +1,17 @@
 package eu.epptec.autostop.controllers;
 
+import eu.epptec.autostop.model.Car;
 import eu.epptec.autostop.model.Ride;
 import eu.epptec.autostop.services.IRideService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.hateoas.CollectionModel;
+import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @ComponentScan(basePackageClasses = {RideModelAssembler.class})
@@ -27,9 +22,12 @@ public class RideController {
     @Autowired
     private RideModelAssembler assembler;
 
-    @PostMapping("/rides")
-    EntityModel<Ride> addRide(@RequestBody Ride ride) {
-        ride = rideService.save(ride);
+    @Autowired
+    private PagedResourcesAssembler<Ride> pagedResourcesAssembler;
+
+    @PostMapping("users/{userId}/cars/{carId}/rides")
+    EntityModel<Ride> addRide(@RequestBody Ride ride, @PathVariable Long carId) {
+        ride = rideService.save(ride, carId);
 
         return assembler.toModel(ride);
     }
@@ -55,10 +53,10 @@ public class RideController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/user/{userId}/pastRides")
-    PagedModel<EntityModel<Ride>> findPast(@PathVariable Long userId, Pageable pageable) {
+    @GetMapping("/users/{userId}/pastDriverRides")
+    PagedModel<EntityModel<Ride>> findPastDriverRides(@PathVariable Long userId, Pageable pageable) {
         Page<Ride> rides = rideService.findPastDriverRides(userId, pageable);
-
-        return null;
+        System.out.println(rides.get().count());
+        return pagedResourcesAssembler.toModel(rides, assembler);
     }
 }

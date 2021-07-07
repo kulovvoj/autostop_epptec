@@ -1,5 +1,7 @@
 package eu.epptec.autostop.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -25,18 +27,21 @@ public class Destination {
     @Column(name = "price")
     private int price;
 
-    @OneToOne(cascade = ALL)
-    @JoinColumn(name = "id_address")
+    @OneToOne(mappedBy = "destination", cascade = ALL)
+    @JsonManagedReference(value = "destAddRef")
     private Address address;
 
     @ManyToOne
     @JoinColumn(name = "id_ride")
+    @JsonBackReference(value = "rideDestRef")
     private Ride ride;
 
     @OneToMany(mappedBy = "from")
+    @JsonManagedReference(value = "passFromRef")
     private List<Passenger> passengersEntering;
 
     @OneToMany(mappedBy = "to")
+    @JsonManagedReference(value = "passToRef")
     private List<Passenger> passengersLeaving;
 
     public Destination() {

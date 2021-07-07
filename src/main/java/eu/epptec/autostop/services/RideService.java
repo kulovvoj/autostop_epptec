@@ -2,6 +2,7 @@ package eu.epptec.autostop.services;
 
 import eu.epptec.autostop.exceptions.RideNotFoundException;
 import eu.epptec.autostop.model.Ride;
+import eu.epptec.autostop.repositories.CarRepository;
 import eu.epptec.autostop.repositories.RideRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,6 +14,9 @@ public class RideService implements IRideService {
     @Autowired
     private RideRepository rideRepository;
 
+    @Autowired
+    private CarRepository carRepository;
+
     @Override
     public Ride findById(Long id) {
         return rideRepository.findById(id)
@@ -20,14 +24,14 @@ public class RideService implements IRideService {
     }
 
     @Override
-    public Ride save(Ride ride) {
+    public Ride save(Ride ride, Long carId) {
+        ride.setCar(carRepository.getById(carId));
         return rideRepository.save(ride);
     }
 
     @Override
     public Page<Ride> findPastDriverRides(Long userId, Pageable pageable) {
-
-        return rideRepository.findAll(pageable);
+        return rideRepository.findPastDriverRides(userId, pageable);
     }
 
     @Override

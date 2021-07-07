@@ -1,5 +1,7 @@
 package eu.epptec.autostop.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -14,23 +16,26 @@ public class Passenger {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "id_user")
-    private User user;
-
-    @ManyToOne
-    @JoinColumn(name = "id_destination_from")
-    private Destination from;
-
-    @ManyToOne
-    @JoinColumn(name = "id_destination_to")
-    private Destination to;
-
     @Column(name = "passenger_rating")
     private int passengerRating;
 
     @Column(name = "driver_rating")
     private int driverRating;
+
+    @ManyToOne
+    @JoinColumn(name = "id_user")
+    @JsonBackReference(value = "userPassRef")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "id_destination_from")
+    @JsonBackReference(value = "passFromRef")
+    private Destination from;
+
+    @ManyToOne
+    @JoinColumn(name = "id_destination_to")
+    @JsonBackReference(value = "passToRef")
+    private Destination to;
 
     public Long getId() {
         return id;

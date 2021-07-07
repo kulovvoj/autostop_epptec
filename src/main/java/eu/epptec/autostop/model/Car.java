@@ -1,5 +1,8 @@
 package eu.epptec.autostop.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -30,9 +33,11 @@ public class Car {
 
     @ManyToOne
     @JoinColumn(name = "id_user")
+    @JsonBackReference(value = "userCarRef")
     private User user;
 
-    @OneToMany(mappedBy = "car")
+    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
+    @JsonManagedReference(value = "carRideRef")
     private List<Ride> rides;
 
     public Car() {

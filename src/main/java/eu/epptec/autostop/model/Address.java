@@ -1,7 +1,11 @@
 package eu.epptec.autostop.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 
+import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -27,7 +31,9 @@ public class Address {
     @Column(name = "house_number")
     private Integer houseNumber;
 
-    @OneToOne(mappedBy = "address")
+    @OneToOne
+    @JoinColumn(name = "id_destination")
+    @JsonBackReference(value = "destAddRef")
     private Destination destination;
 
     public Address() {
