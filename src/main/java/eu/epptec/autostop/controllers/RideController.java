@@ -56,7 +56,12 @@ public class RideController {
     @GetMapping("/users/{userId}/pastDriverRides")
     PagedModel<EntityModel<Ride>> findPastDriverRides(@PathVariable Long userId, Pageable pageable) {
         Page<Ride> rides = rideService.findPastDriverRides(userId, pageable);
-        System.out.println(rides.get().count());
+        return pagedResourcesAssembler.toModel(rides, assembler);
+    }
+
+    @GetMapping("/users/{userId}/futureDriverRides")
+    PagedModel<EntityModel<Ride>> findFutureDriverRides(@PathVariable Long userId, Pageable pageable) {
+        Page<Ride> rides = rideService.findFutureDriverRides(userId, pageable);
         return pagedResourcesAssembler.toModel(rides, assembler);
     }
 }

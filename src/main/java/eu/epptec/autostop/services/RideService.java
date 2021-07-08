@@ -9,6 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+
 @Service
 public class RideService implements IRideService {
     @Autowired
@@ -31,7 +33,14 @@ public class RideService implements IRideService {
 
     @Override
     public Page<Ride> findPastDriverRides(Long userId, Pageable pageable) {
-        return rideRepository.findPastDriverRides(userId, pageable);
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+        return rideRepository.findPastDriverRides(userId, now, pageable);
+    }
+
+    @Override
+    public Page<Ride> findFutureDriverRides(Long userId, Pageable pageable) {
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+        return rideRepository.findFutureDriverRides(userId, now, pageable);
     }
 
     @Override

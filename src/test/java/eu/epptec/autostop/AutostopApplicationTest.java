@@ -237,7 +237,7 @@ class AutostopApplicationTest {
         Assert.assertEquals(200, result.getStatusCodeValue());
 
         // -------------
-        // Add the first destination of the second ride
+        // Add the first destination of the third ride
         // -------------
         rideEntityModel = null;
         try {
@@ -249,7 +249,7 @@ class AutostopApplicationTest {
 
         baseUrl = "http://localhost:" + randomServerPort + "/rides/" + rideEntityModel.getContent().getId() + "/destinations";
         address = new Address("Písek", "123 00", "Jižní", 20, 25);
-        destination = new Destination(new Timestamp(System.currentTimeMillis() + 200000), 0, address, rideEntityModel.getContent());
+        destination = new Destination(new Timestamp(System.currentTimeMillis() + 20000000), 0, address, rideEntityModel.getContent());
 
         destinationRequest = new HttpEntity<>(destination);
         result = this.restTemplate.postForEntity(baseUrl, destinationRequest, String.class);
@@ -257,7 +257,7 @@ class AutostopApplicationTest {
 
 
         // -------------
-        // Add the second destination of the second ride
+        // Add the second destination of the third ride
         // -------------
         address = new Address("Jihlava", "333 03", "Arménská", 226, 22);
         destination = new Destination(new Timestamp(System.currentTimeMillis() + 1000000), 150, address, rideEntityModel.getContent());
@@ -267,7 +267,7 @@ class AutostopApplicationTest {
         Assert.assertEquals(200, result.getStatusCodeValue());
 
         // -------------
-        // Add the third destination of the second ride
+        // Add the third destination of the third ride
         // -------------
         address = new Address("Jindřichův Hradec", "432 01", "Simonova", 128, null);
         destination = new Destination(new Timestamp(System.currentTimeMillis() + 2000000), 100, address, rideEntityModel.getContent());
@@ -281,6 +281,16 @@ class AutostopApplicationTest {
         // -------------
 
         baseUrl = "http://localhost:" + randomServerPort + "/users/" + userEntityModel.getContent().getId() + "/pastDriverRides";
+        result = this.restTemplate.getForEntity(baseUrl, String.class);
+        Assert.assertEquals(200, result.getStatusCodeValue());
+
+        System.out.println(result.getBody());
+
+        // -------------
+        // Request all future rides of user
+        // -------------
+
+        baseUrl = "http://localhost:" + randomServerPort + "/users/" + userEntityModel.getContent().getId() + "/futureDriverRides";
         result = this.restTemplate.getForEntity(baseUrl, String.class);
         Assert.assertEquals(200, result.getStatusCodeValue());
 
