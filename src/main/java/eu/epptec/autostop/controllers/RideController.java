@@ -1,7 +1,6 @@
 package eu.epptec.autostop.controllers;
 
-import eu.epptec.autostop.model.Car;
-import eu.epptec.autostop.model.Ride;
+import eu.epptec.autostop.model.*;
 import eu.epptec.autostop.services.IRideService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
@@ -12,6 +11,9 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.sql.Timestamp;
+import java.util.List;
 
 @RestController
 @ComponentScan(basePackageClasses = {RideModelAssembler.class})
@@ -63,5 +65,17 @@ public class RideController {
     PagedModel<EntityModel<Ride>> findFutureDriverRides(@PathVariable Long userId, Pageable pageable) {
         Page<Ride> rides = rideService.findFutureDriverRides(userId, pageable);
         return pagedResourcesAssembler.toModel(rides, assembler);
+    }
+
+    @PostMapping("/rides/rideSearchData")
+    List<RideSearchListingDTO> rideSearchData(@RequestBody SearchData searchData) {
+        return rideService.getRideSearchListing(searchData);
+    }
+
+    public static class SearchData {
+        public String cityFrom;
+        public String cityTo;
+        public Timestamp time;
+        public Boolean arrival;
     }
 }

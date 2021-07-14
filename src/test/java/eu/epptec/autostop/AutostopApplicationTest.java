@@ -19,8 +19,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.Timestamp;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static eu.epptec.autostop.controllers.RideController.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -295,5 +296,45 @@ class AutostopApplicationTest {
         Assert.assertEquals(200, result.getStatusCodeValue());
 
         System.out.println(result.getBody());
+    }
+
+
+    @Test
+    void testSubQueryReturn() throws URISyntaxException {
+        String baseUrl = "http://localhost:" + randomServerPort + "/rides/rideSearchData";
+        URI uri = new URI(baseUrl);
+
+        SearchData searchData = new SearchData();
+
+        Timestamp departureTime = new Timestamp(System.currentTimeMillis());
+        searchData.cityFrom = "Jihlava";
+        searchData.cityTo = "Jindřichův Hradec";
+        searchData.time = departureTime;
+        searchData.arrival = true;
+
+        HttpEntity<SearchData> searchDataRequest = new HttpEntity<>(searchData);
+
+        ResponseEntity<String> result = this.restTemplate.postForEntity(uri, searchData, String.class);
+
+        Assert.assertEquals(200, result.getStatusCodeValue());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<RideSearchListingDTO> rideSearchListingDTOs = null;
+        try {
+            rideSearchListingDTOs = objectMapper.readValue(result.getBody(), new TypeReference<>(){});
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        Assert.assertNotNull(rideSearchListingDTOs);
+
+        rideSearchListingDTOs.forEach(rideSearchListingDTO -> {
+            System.out.println("___________");
+            System.out.println(rideSearchListingDTO.getRideId());
+            System.out.println(rideSearchListingDTO.getFromCity());
+            System.out.println(rideSearchListingDTO.getDepartureTime());
+            System.out.println(rideSearchListingDTO.getToCity());
+            System.out.println(rideSearchListingDTO.getArrivalTime());
+            System.out.println(rideSearchListingDTO.getRating());
+        });
     }
 }

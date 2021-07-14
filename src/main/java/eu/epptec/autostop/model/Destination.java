@@ -25,6 +25,9 @@ public class Destination {
     @Column(name = "price")
     private int price;
 
+    @Column(name = "passenger_count")
+    private int passengerCount;
+
     @OneToOne(mappedBy = "destination", cascade = ALL)
     @JsonManagedReference(value = "destAddRef")
     private Address address;
@@ -84,6 +87,14 @@ public class Destination {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public int getPassengerCount() {
+        return passengerCount;
+    }
+
+    public void setPassengerCount(int passengerCount) {
+        this.passengerCount = passengerCount;
     }
 
     public Address getAddress() {

@@ -4,8 +4,6 @@ import eu.epptec.autostop.model.Car;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
-
 public interface ICarService {
     Car findById(Long carId);
     Car save(Car car, Long userId);

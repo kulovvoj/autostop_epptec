@@ -1,7 +1,5 @@
 package eu.epptec.autostop.controllers;
 
-
-import eu.epptec.autostop.model.Address;
 import eu.epptec.autostop.model.Destination;
 import eu.epptec.autostop.services.IDestinationService;
 import org.springframework.beans.factory.annotation.Autowired;
