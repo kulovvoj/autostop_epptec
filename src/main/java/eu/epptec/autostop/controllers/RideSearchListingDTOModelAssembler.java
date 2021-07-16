@@ -1,7 +1,7 @@
 package eu.epptec.autostop.controllers;
 
 import eu.epptec.autostop.model.Ride;
-import eu.epptec.autostop.model.UserRideDTO;
+import eu.epptec.autostop.model.RideSearchListingDTO;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
@@ -10,11 +10,11 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
-public class RideModelAssembler implements RepresentationModelAssembler<Ride, EntityModel<Ride>> {
+public class RideSearchListingDTOModelAssembler implements RepresentationModelAssembler<RideSearchListingDTO, EntityModel<RideSearchListingDTO>> {
     @Override
-    public EntityModel<Ride> toModel (Ride ride) {
+    public EntityModel<RideSearchListingDTO> toModel (RideSearchListingDTO rideSearchListingDTO) {
         return EntityModel.of(
-                ride,
-                linkTo(methodOn(RideController.class).findById(ride.getId())).withSelfRel());
+                rideSearchListingDTO,
+                linkTo(methodOn(RideController.class).findById(rideSearchListingDTO.getRideId())).withSelfRel());
     }
 }

@@ -8,6 +8,7 @@ public interface ICarService {
     Car findById(Long carId);
     Car save(Car car, Long userId);
     Page<Car> findAll(Long userId, Pageable pageable);
+    Page<Car> findAllActive(Long userId, Pageable pageable);
     Car replace(Car car, Long id);
     void deleteById(Long id);
 }

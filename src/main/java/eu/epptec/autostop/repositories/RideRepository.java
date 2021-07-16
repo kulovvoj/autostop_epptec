@@ -2,6 +2,7 @@ package eu.epptec.autostop.repositories;
 
 import eu.epptec.autostop.model.Ride;
 import eu.epptec.autostop.model.RideSearchListingDTO;
+import eu.epptec.autostop.model.UserRideDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,37 +16,75 @@ import java.util.List;
 
 @Repository
 public interface RideRepository extends JpaRepository<Ride, Long> {
-    @Query(value = "SELECT r \n" +
+    @Query(value = "SELECT new eu.epptec.autostop.model.UserRideDTO(r.id, \n" +
+            "                                                       dFirst.id, \n" +
+            "                                                       dFirst.address.city, \n" +
+            "                                                       dFirst.departureTime, \n" +
+            "                                                       dLast.id, \n" +
+            "                                                       dLast.address.city, \n" +
+            "                                                       dLast.departureTime, \n" +
+            "                                                       c.id, \n" +
+            "                                                       c.brand, \n" +
+            "                                                       c.model, \n" +
+            "                                                       c.productionYear) \n" +
             "FROM User u \n" +
             "JOIN u.cars c \n" +
             "JOIN c.rides r \n" +
             "JOIN r.destinations d \n" +
-            "JOIN r.destinations d_first \n" +
-            "   WITH d_first.departureTime = (SELECT MIN(d_min.departureTime) \n" +
-            "   FROM Destination d_min \n" +
-            "   WHERE d_min.ride.id = r.id)" +
+            "JOIN r.destinations dFirst \n" +
+            "   WITH dFirst.departureTime = (SELECT MIN(dMin.departureTime) \n" +
+            "   FROM Destination dMin \n" +
+            "   WHERE dMin.ride.id = r.id) \n" +
+            "JOIN r.destinations dLast \n" +
+            "   WITH dLast.departureTime = (SELECT MAX(dMax.departureTime) \n" +
+            "   FROM Destination dMax \n" +
+            "   WHERE dMax.ride.id = r.id) \n" +
             "WHERE u.id = :userId \n" +
-            "   AND :now >= d_first.departureTime \n" +
+            "   AND :now >= dFirst.departureTime \n" +
             "GROUP BY r.id \n" +
-            "ORDER BY d_first.departureTime DESC")
-    Page<Ride> findPastDriverRides(@Param("userId") Long userId, @Param("now") Timestamp now, Pageable pageable);
+            "ORDER BY dFirst.departureTime DESC")
+    Page<UserRideDTO> findPastDriverRides(@Param("userId") Long userId, @Param("now") Timestamp now, Pageable pageable);
 
-    @Query(value = "SELECT r \n" +
+    @Query(value = "SELECT new eu.epptec.autostop.model.UserRideDTO(r.id, \n" +
+            "                                                       dFirst.id, \n" +
+            "                                                       dFirst.address.city, \n" +
+            "                                                       dFirst.departureTime, \n" +
+            "                                                       dLast.id, \n" +
+            "                                                       dLast.address.city, \n" +
+            "                                                       dLast.departureTime, \n" +
+            "                                                       c.id, \n" +
+            "                                                       c.brand, \n" +
+            "                                                       c.model, \n" +
+            "                                                       c.productionYear) \n" +
             "FROM User u \n" +
             "JOIN u.cars c \n" +
             "JOIN c.rides r \n" +
             "JOIN r.destinations d \n" +
-            "JOIN r.destinations d_first \n" +
-            "   WITH d_first.departureTime = (SELECT MIN(d_min.departureTime) \n" +
-            "   FROM Destination d_min \n" +
-            "   WHERE d_min.ride.id = r.id)" +
+            "JOIN r.destinations dFirst \n" +
+            "   WITH dFirst.departureTime = (SELECT MIN(dMin.departureTime) \n" +
+            "   FROM Destination dMin \n" +
+            "   WHERE dMin.ride.id = r.id) \n" +
+            "JOIN r.destinations dLast \n" +
+            "   WITH dLast.departureTime = (SELECT MAX(dMax.departureTime) \n" +
+            "   FROM Destination dMax \n" +
+            "   WHERE dMax.ride.id = r.id) \n" +
             "WHERE u.id = :userId \n" +
-            "   AND :now < d_first.departureTime \n" +
+            "   AND :now < dFirst.departureTime \n" +
             "GROUP BY r.id \n" +
-            "ORDER BY d_first.departureTime ASC")
-    Page<Ride> findFutureDriverRides(@Param("userId") Long userId, @Param("now") Timestamp now, Pageable pageable);
+            "ORDER BY dFirst.departureTime ASC")
+    Page<UserRideDTO> findFutureDriverRides(@Param("userId") Long userId, @Param("now") Timestamp now, Pageable pageable);
 
-    @Query(value = "SELECT r \n" +
+    @Query(value = "SELECT new eu.epptec.autostop.model.UserRideDTO(r.id, \n" +
+            "                                                       dFrom.id, \n" +
+            "                                                       dFrom.address.city, \n" +
+            "                                                       dFrom.departureTime, \n" +
+            "                                                       dTo.id, \n" +
+            "                                                       dTo.address.city, \n" +
+            "                                                       dTo.departureTime, \n" +
+            "                                                       c.id, \n" +
+            "                                                       c.brand, \n" +
+            "                                                       c.model, \n" +
+            "                                                       c.productionYear) \n" +
             "FROM User u \n" +
             "JOIN u.passengerOfList p \n" +
             "JOIN p.from dFrom \n" +
@@ -56,10 +95,19 @@ public interface RideRepository extends JpaRepository<Ride, Long> {
             "   AND :now < dFrom.departureTime \n" +
             "GROUP BY r.id \n" +
             "ORDER BY dFrom.departureTime ASC")
-    Page<Ride> findPastPassengerRides(@Param("userId") Long userId, @Param("now") Timestamp now, Pageable pageable);
+    Page<UserRideDTO> findPastPassengerRides(@Param("userId") Long userId, @Param("now") Timestamp now, Pageable pageable);
 
-
-    @Query(value = "SELECT r \n" +
+    @Query(value = "SELECT new eu.epptec.autostop.model.UserRideDTO(r.id, \n" +
+            "                                                       dFrom.id, \n" +
+            "                                                       dFrom.address.city, \n" +
+            "                                                       dFrom.departureTime, \n" +
+            "                                                       dTo.id, \n" +
+            "                                                       dTo.address.city, \n" +
+            "                                                       dTo.departureTime, \n" +
+            "                                                       c.id, \n" +
+            "                                                       c.brand, \n" +
+            "                                                       c.model, \n" +
+            "                                                       c.productionYear) \n" +
             "FROM User u \n" +
             "JOIN u.passengerOfList p \n" +
             "JOIN p.from dFrom \n" +
@@ -70,7 +118,7 @@ public interface RideRepository extends JpaRepository<Ride, Long> {
             "   AND :now >= dFrom.departureTime \n" +
             "GROUP BY p.id \n" +
             "ORDER BY dFrom.departureTime DESC")
-    Page<Ride> findFuturePassengerRides(@Param("userId") Long userId, @Param("now") Timestamp now, Pageable pageable);
+    Page<UserRideDTO> findFuturePassengerRides(@Param("userId") Long userId, @Param("now") Timestamp now, Pageable pageable);
 
     @Query(value = "SELECT new eu.epptec.autostop.model.RideSearchListingDTO(r.id, \n" +
             "                                                               dFrom.id, \n" +
@@ -109,9 +157,10 @@ public interface RideRepository extends JpaRepository<Ride, Long> {
             "LEFT JOIN d_avg.passengersEntering pAvg \n" +
             "GROUP BY dFrom.id, dTo.id \n" +
             "ORDER BY dFrom.departureTime ASC")
-    List<RideSearchListingDTO> getRideSearchListingDeparture(@Param("cityFrom") String cityFrom,
-                                                    @Param("cityTo") String cityTo,
-                                                    @Param("departureTime") Timestamp departureTime);
+    Page<RideSearchListingDTO> getRideSearchListingDeparture(@Param("cityFrom") String cityFrom,
+                                                             @Param("cityTo") String cityTo,
+                                                             @Param("departureTime") Timestamp departureTime,
+                                                             Pageable pageable);
 
     @Query(value = "SELECT new eu.epptec.autostop.model.RideSearchListingDTO(r.id, \n" +
             "                                                               dFrom.id, \n" +
@@ -150,7 +199,34 @@ public interface RideRepository extends JpaRepository<Ride, Long> {
             "LEFT JOIN d_avg.passengersEntering pAvg \n" +
             "GROUP BY dFrom.id, dTo.id \n" +
             "ORDER BY dTo.departureTime DESC")
-    List<RideSearchListingDTO> getRideSearchListingArrival(@Param("cityFrom") String cityFrom,
+    Page<RideSearchListingDTO> getRideSearchListingArrival(@Param("cityFrom") String cityFrom,
                                                            @Param("cityTo") String cityTo,
-                                                           @Param("arrivalTime") Timestamp arrivalTime);
+                                                           @Param("arrivalTime") Timestamp arrivalTime,
+                                                           Pageable pageable);
+
+
+    @Query(value = "SELECT new eu.epptec.autostop.model.UserRideDTO(r.id, \n" +
+            "                                                       dFrom.id, \n" +
+            "                                                       dFrom.address.city, \n" +
+            "                                                       dFrom.departureTime, \n" +
+            "                                                       dTo.id, \n" +
+            "                                                       dTo.address.city, \n" +
+            "                                                       dTo.departureTime, \n" +
+            "                                                       c.id, \n" +
+            "                                                       c.brand, \n" +
+            "                                                       c.model, \n" +
+            "                                                       c.productionYear) \n" +
+            "FROM User u \n" +
+            "JOIN u.passengerOfList p \n" +
+            "JOIN p.from dFrom \n" +
+            "JOIN p.to dTo \n" +
+            "JOIN dTo.ride r \n" +
+            "JOIN r.car c \n" +
+            "WHERE u.id = :userId \n" +
+            "   AND dFrom.id = :fromId \n" +
+            "   AND dTo.id = :toId \n")
+    UserRideDTO getUserRideDTOByPassenger(@Param("userId") Long userId,
+                                          @Param("fromId") Long fromId,
+                                          @Param("toId") Long toId);
+
 }

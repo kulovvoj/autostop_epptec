@@ -18,7 +18,7 @@ public class Ride {
     private Long id;
 
     @Column(name = "capacity")
-    private int capacity;
+    private Integer capacity;
 
     @OneToMany(mappedBy = "ride")
     @JsonManagedReference(value = "rideDestRef")
@@ -32,12 +32,12 @@ public class Ride {
     public Ride() {
     }
 
-    public Ride(int capacity, Car car) {
+    public Ride(Integer capacity, Car car) {
         this.capacity = capacity;
         this.car = car;
     }
 
-    public Ride(Long id, int capacity, List<Destination> destinations, Car car) {
+    public Ride(Long id, Integer capacity, List<Destination> destinations, Car car) {
         this.id = id;
         this.capacity = capacity;
         this.destinations = destinations;
@@ -52,11 +52,11 @@ public class Ride {
         this.id = id;
     }
 
-    public int getCapacity() {
+    public Integer getCapacity() {
         return capacity;
     }
 
-    public void setCapacity(int capacity) {
+    public void setCapacity(Integer capacity) {
         this.capacity = capacity;
     }
 

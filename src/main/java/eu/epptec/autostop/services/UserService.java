@@ -1,7 +1,11 @@
 package eu.epptec.autostop.services;
 
+import eu.epptec.autostop.exceptions.PassengerNotFoundException;
+import eu.epptec.autostop.model.Passenger;
+import eu.epptec.autostop.model.RatingDTO;
 import eu.epptec.autostop.model.User;
 import eu.epptec.autostop.exceptions.UserNotFoundException;
+import eu.epptec.autostop.repositories.PassengerRepository;
 import eu.epptec.autostop.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +16,9 @@ import java.util.List;
 public class UserService implements IUserService {
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PassengerRepository passengerRepository;
 
     @Override
     public User findById(Long id) {
@@ -28,6 +35,9 @@ public class UserService implements IUserService {
     public List<User> findAll() {
         return userRepository.findAll();
     }
+
+    @Override
+    public RatingDTO getRating(Long id) {return userRepository.getRating(id);}
 
     @Override
     public User replace(User user, Long id) {

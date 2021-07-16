@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 import static javax.persistence.GenerationType.IDENTITY;
@@ -16,6 +17,9 @@ public class Car {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
+    @Column(name = "active")
+    private Boolean active;
+
     @Column(name = "brand")
     private String brand;
 
@@ -26,10 +30,10 @@ public class Car {
     private String type;
 
     @Column(name = "production_year")
-    private int productionYear;
+    private Integer productionYear;
 
     @Column(name = "capacity")
-    private int capacity;
+    private Integer capacity;
 
     @ManyToOne
     @JoinColumn(name = "id_user")
@@ -43,7 +47,8 @@ public class Car {
     public Car() {
     }
 
-    public Car(String brand, String model, String type, int productionYear, int capacity, User user) {
+    public Car(Boolean active, String brand, String model, String type, Integer productionYear, Integer capacity, User user) {
+        this.active = active;
         this.brand = brand;
         this.model = model;
         this.type = type;
@@ -52,8 +57,9 @@ public class Car {
         this.user = user;
     }
 
-    public Car(Long id, String brand, String model, String type, int productionYear, int capacity, User user, List<Ride> rides) {
+    public Car(Long id, Boolean active, String brand, String model, String type, Integer productionYear, Integer capacity, User user, List<Ride> rides) {
         this.id = id;
+        this.active = active;
         this.brand = brand;
         this.model = model;
         this.type = type;
@@ -69,6 +75,22 @@ public class Car {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    public List<Ride> getRides() {
+        return rides;
+    }
+
+    public void setRides(List<Ride> rides) {
+        this.rides = rides;
     }
 
     public String getBrand() {
@@ -95,19 +117,19 @@ public class Car {
         this.type = type;
     }
 
-    public int getProductionYear() {
+    public Integer getProductionYear() {
         return productionYear;
     }
 
-    public void setProductionYear(int productionYear) {
+    public void setProductionYear(Integer productionYear) {
         this.productionYear = productionYear;
     }
 
-    public int getCapacity() {
+    public Integer getCapacity() {
         return capacity;
     }
 
-    public void setCapacity(int capacity) {
+    public void setCapacity(Integer capacity) {
         this.capacity = capacity;
     }
 

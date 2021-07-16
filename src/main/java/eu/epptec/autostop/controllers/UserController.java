@@ -1,9 +1,11 @@
 package eu.epptec.autostop.controllers;
 
+import eu.epptec.autostop.model.RatingDTO;
 import eu.epptec.autostop.model.User;
 import eu.epptec.autostop.services.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.repository.query.Param;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.ResponseEntity;
@@ -23,20 +25,23 @@ public class UserController {
     private IUserService userService;
 
     @Autowired
-    private UserModelAssembler assembler;
+    private UserModelAssembler userModelAssembler;
+
+    @Autowired
+    private RatingDTOModelAssembler ratingDTOModelAssembler;
 
     @PostMapping(consumes = "application/json", produces = "application/json")
     EntityModel<User> addUser(@RequestBody User user) {
         user = userService.save(user);
 
-        return assembler.toModel(user);
+        return userModelAssembler.toModel(user);
     }
 
     @GetMapping()
     CollectionModel<EntityModel<User>> findAll() {
         List<EntityModel<User>> users = userService.findAll()
                 .stream()
-                .map(user -> assembler.toModel(user))
+                .map(user -> userModelAssembler.toModel(user))
                 .collect(Collectors.toList());
 
         return CollectionModel.of(users,
@@ -47,14 +52,21 @@ public class UserController {
     EntityModel<User> findById(@PathVariable Long id) {
         User user = userService.findById(id);
 
-        return assembler.toModel(user);
+        return userModelAssembler.toModel(user);
     }
 
-    @PutMapping("/users/{id}")
+    @GetMapping("/rating")
+    EntityModel<RatingDTO> getRating(@PathVariable Long id) {
+        RatingDTO ratingDTO = userService.getRating(id);
+
+        return ratingDTOModelAssembler.toModel(ratingDTO);
+    }
+
+    @PutMapping("/{id}")
     EntityModel<User> replace(@RequestBody User user, @PathVariable Long id) {
         user = userService.replace(user, id);
 
-        return assembler.toModel(user);
+        return userModelAssembler.toModel(user);
     }
 
     @DeleteMapping("/{id}")

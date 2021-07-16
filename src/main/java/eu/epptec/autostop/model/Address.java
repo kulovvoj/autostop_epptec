@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 
+import java.io.Serializable;
+
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity

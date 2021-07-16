@@ -12,6 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
+import org.springframework.hateoas.mediatype.hal.Jackson2HalModule;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -19,7 +21,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.Timestamp;
-import java.util.List;
 
 import static eu.epptec.autostop.controllers.RideController.*;
 
@@ -89,7 +90,7 @@ class AutostopApplicationTest {
         }
         Assert.assertNotNull(userEntityModel);
         baseUrl = "http://localhost:" + randomServerPort + "/users/" + userEntityModel.getContent().getId() + "/cars";
-        Car car = new Car("BMW", "M6", "Sedan", 2016, 5, userEntityModel.getContent());
+        Car car = new Car(true, "BMW", "M6", "Sedan", 2016, 5, userEntityModel.getContent());
         HttpEntity<Car> carRequest = new HttpEntity<>(car);
 
         result = this.restTemplate.postForEntity(baseUrl, carRequest, String.class);
@@ -206,9 +207,8 @@ class AutostopApplicationTest {
         // -------------
         // Add the another car
         // -------------
-
         baseUrl = "http://localhost:" + randomServerPort + "/users/" + userEntityModel.getContent().getId() + "/cars";
-        car = new Car("Corvette", "C3", "Two-seater", 1973, 2, userEntityModel.getContent());
+        car = new Car(true, "Corvette", "C3", "Two-seater", 1973, 2, userEntityModel.getContent());
         carRequest = new HttpEntity<>(car);
 
         result = this.restTemplate.postForEntity(baseUrl, carRequest, String.class);
@@ -298,9 +298,30 @@ class AutostopApplicationTest {
         System.out.println(result.getBody());
     }
 
+    @Test
+    void testFindActiveCars() throws URISyntaxException {
+        String baseUrl = "http://localhost:" + randomServerPort + "/users/121/cars/136";
+        URI uri = new URI(baseUrl);
+
+        ResponseEntity<String> result = this.restTemplate.getForEntity(uri, String.class);
+
+        Assert.assertEquals(200, result.getStatusCodeValue());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new Jackson2HalModule());
+        PagedModel<EntityModel<Car>> cars = null;
+        try {
+            cars = objectMapper.readValue(result.getBody(), new TypeReference<>(){});
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        Assert.assertNotNull(cars);
+        cars.getContent().forEach(carEntityModel -> System.out.println(carEntityModel.getContent().getModel()));
+    }
 
     @Test
-    void testSubQueryReturn() throws URISyntaxException {
+    void testRideSearch() throws URISyntaxException {
+
         String baseUrl = "http://localhost:" + randomServerPort + "/rides/rideSearchData";
         URI uri = new URI(baseUrl);
 
@@ -319,7 +340,8 @@ class AutostopApplicationTest {
         Assert.assertEquals(200, result.getStatusCodeValue());
 
         ObjectMapper objectMapper = new ObjectMapper();
-        List<RideSearchListingDTO> rideSearchListingDTOs = null;
+        objectMapper.registerModule(new Jackson2HalModule());
+        PagedModel<EntityModel<RideSearchListingDTO>> rideSearchListingDTOs = null;
         try {
             rideSearchListingDTOs = objectMapper.readValue(result.getBody(), new TypeReference<>(){});
         } catch (JsonProcessingException e) {
@@ -327,14 +349,14 @@ class AutostopApplicationTest {
         }
         Assert.assertNotNull(rideSearchListingDTOs);
 
-        rideSearchListingDTOs.forEach(rideSearchListingDTO -> {
+        rideSearchListingDTOs.getContent().forEach(rideSearchListingDTO -> {
             System.out.println("___________");
-            System.out.println(rideSearchListingDTO.getRideId());
-            System.out.println(rideSearchListingDTO.getFromCity());
-            System.out.println(rideSearchListingDTO.getDepartureTime());
-            System.out.println(rideSearchListingDTO.getToCity());
-            System.out.println(rideSearchListingDTO.getArrivalTime());
-            System.out.println(rideSearchListingDTO.getRating());
+            System.out.println(rideSearchListingDTO.getContent().getRideId());
+            System.out.println(rideSearchListingDTO.getContent().getFromCity());
+            System.out.println(rideSearchListingDTO.getContent().getDepartureTime());
+            System.out.println(rideSearchListingDTO.getContent().getToCity());
+            System.out.println(rideSearchListingDTO.getContent().getArrivalTime());
+            System.out.println(rideSearchListingDTO.getContent().getRating());
         });
     }
 }

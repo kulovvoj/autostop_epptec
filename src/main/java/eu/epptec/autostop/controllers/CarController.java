@@ -40,6 +40,16 @@ public class CarController {
         return pagedResourcesAssembler.toModel(cars, assembler);
     }
 
+    @GetMapping(value = "/active")
+    PagedModel<EntityModel<Car>> findAllActive(@PathVariable Long userId, Pageable pageable) {
+        Page<Car> cars = carService.findAllActive(userId, pageable);
+        cars.forEach(car -> System.out.println(car.getBrand()));
+        PagedModel<EntityModel<Car>> pm = pagedResourcesAssembler.toModel(cars, assembler);
+        System.out.println("YO");
+        pm.getContent().forEach(car -> System.out.println(car.getContent().getActive()));
+        return pm;
+    }
+
     @GetMapping("/{carId}")
     EntityModel<Car> findById(@PathVariable Long carId) {
         Car car = carService.findById(carId);

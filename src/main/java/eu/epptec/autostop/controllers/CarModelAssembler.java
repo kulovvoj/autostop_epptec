@@ -15,7 +15,6 @@ public class CarModelAssembler implements RepresentationModelAssembler<Car, Enti
     public EntityModel<Car> toModel (Car car) {
         return EntityModel.of(
                 car,
-                linkTo(methodOn(CarController.class).findById(car.getId())).withSelfRel(),
-                linkTo(methodOn(CarController.class).findAll(car.getUser().getId(), Pageable.ofSize(10))).withRel("cars"));
+                linkTo(methodOn(CarController.class).findById(car.getId())).withSelfRel());
     }
 }

@@ -27,6 +27,13 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
         return e;
     }
 
+    @ResponseBody
+    @ExceptionHandler(RideFullException.class)
+    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    public Object handleRideFullException(RideFullException e) {
+        return e;
+    }
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException e,
@@ -45,7 +52,6 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
                 .collect(Collectors.toList());
 
         body.put("errors", errors);
-
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 }

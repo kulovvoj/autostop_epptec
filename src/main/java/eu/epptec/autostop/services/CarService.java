@@ -35,6 +35,11 @@ public class CarService implements ICarService {
     }
 
     @Override
+    public Page<Car> findAllActive(Long userId, Pageable pageable) {
+        return carRepository.findByUserIdAndActiveTrue(userId, pageable);
+    }
+
+    @Override
     public Car replace(Car car, Long id) {
         return carRepository.findById(id)
                 .map(oldCar -> {
