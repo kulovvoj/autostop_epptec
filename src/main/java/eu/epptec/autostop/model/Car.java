@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.List;
 
 import static javax.persistence.GenerationType.IDENTITY;
@@ -57,7 +56,7 @@ public class Car {
         this.user = user;
     }
 
-    public Car(Long id, Boolean active, String brand, String model, String type, Integer productionYear, Integer capacity, User user, List<Ride> rides) {
+    public Car(Long id, Boolean active, String brand, String model, String type, Integer productionYear, Integer capacity, User user) {
         this.id = id;
         this.active = active;
         this.brand = brand;
@@ -66,7 +65,6 @@ public class Car {
         this.productionYear = productionYear;
         this.capacity = capacity;
         this.user = user;
-        this.rides = rides;
     }
 
     public Long getId() {

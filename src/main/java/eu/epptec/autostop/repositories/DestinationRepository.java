@@ -14,14 +14,14 @@ import java.util.List;
 public interface DestinationRepository extends JpaRepository<Destination, Long> {
     Page<Destination> findByRideId(Long rideId, Pageable pageable);
 
-    @Query("SELECT d " +
-            "FROM Ride r " +
-            "JOIN r.destinations dFrom " +
-            "   WITH dFrom.id = :fromId" +
-            "JOIN r.destinations dTo " +
-            "   WITH dTo.id = :toId" +
-            "JOIN r.destinations d " +
-            "WHERE dFrom.departureTime < d.departureTime " +
+    @Query("SELECT d \n" +
+            "FROM Ride r \n" +
+            "JOIN r.destinations dFrom \n" +
+            "   WITH dFrom.id = :fromId \n" +
+            "JOIN r.destinations dTo \n" +
+            "   WITH dTo.id = :toId \n" +
+            "JOIN r.destinations d \n" +
+            "WHERE dFrom.departureTime < d.departureTime \n" +
             "   AND d.departureTime <= dTo.departureTime")
     List<Destination> findAllInbetween(@Param("fromId") Long fromId,
                                        @Param("toId") Long toId);
