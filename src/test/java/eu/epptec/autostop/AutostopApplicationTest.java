@@ -3,6 +3,7 @@ package eu.epptec.autostop;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import eu.epptec.autostop.dtos.RideSearchListingDTO;
 import eu.epptec.autostop.model.*;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.data.domain.Page;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.mediatype.hal.Jackson2HalModule;
@@ -341,7 +343,7 @@ class AutostopApplicationTest {
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new Jackson2HalModule());
-        PagedModel<EntityModel<RideSearchListingDTO>> rideSearchListingDTOs = null;
+        Page<RideSearchListingDTO> rideSearchListingDTOs = null;
         try {
             rideSearchListingDTOs = objectMapper.readValue(result.getBody(), new TypeReference<>(){});
         } catch (JsonProcessingException e) {
@@ -351,12 +353,12 @@ class AutostopApplicationTest {
 
         rideSearchListingDTOs.getContent().forEach(rideSearchListingDTO -> {
             System.out.println("___________");
-            System.out.println(rideSearchListingDTO.getContent().getRideId());
-            System.out.println(rideSearchListingDTO.getContent().getFromCity());
-            System.out.println(rideSearchListingDTO.getContent().getDepartureTime());
-            System.out.println(rideSearchListingDTO.getContent().getToCity());
-            System.out.println(rideSearchListingDTO.getContent().getArrivalTime());
-            System.out.println(rideSearchListingDTO.getContent().getRating());
+            System.out.println(rideSearchListingDTO.getRideId());
+            System.out.println(rideSearchListingDTO.getFromCity());
+            System.out.println(rideSearchListingDTO.getDepartureTime());
+            System.out.println(rideSearchListingDTO.getToCity());
+            System.out.println(rideSearchListingDTO.getArrivalTime());
+            System.out.println(rideSearchListingDTO.getRating());
         });
     }
 }

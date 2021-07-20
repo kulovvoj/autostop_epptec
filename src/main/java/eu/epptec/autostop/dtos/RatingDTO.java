@@ -1,4 +1,4 @@
-package eu.epptec.autostop.model;
+package eu.epptec.autostop.dtos;
 
 public class RatingDTO {
     Long userId;

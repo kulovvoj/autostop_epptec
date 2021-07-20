@@ -1,67 +1,40 @@
 package eu.epptec.autostop.controllers;
 
-import eu.epptec.autostop.model.*;
-import eu.epptec.autostop.services.IDestinationService;
-import eu.epptec.autostop.services.IRideService;
+import eu.epptec.autostop.dtos.RideDTO;
+import eu.epptec.autostop.dtos.RideSearchListingDTO;
+import eu.epptec.autostop.dtos.UserRideDTO;
+import eu.epptec.autostop.services.DestinationService;
+import eu.epptec.autostop.services.RideService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
-import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 
 @RestController
-@ComponentScan(basePackageClasses = {RideModelAssembler.class})
 public class RideController {
     @Autowired
-    private IRideService rideService;
+    private RideService rideService;
 
     @Autowired
-    private IDestinationService destinationService;
-
-    @Autowired
-    private RideModelAssembler rideAssembler;
-
-    @Autowired
-    private RideSearchListingDTOModelAssembler rideSearchListingDTOModelAssembler;
-
-    @Autowired
-    private UserRideDTOModelAssembler userRideDTOAssembler;
-
-    @Autowired
-    private PagedResourcesAssembler<Ride> ridePagedResourcesAssembler;
-
-    @Autowired
-    private PagedResourcesAssembler<UserRideDTO> userRideDTOPagedResourcesAssembler;
-
-    @Autowired
-    private PagedResourcesAssembler<RideSearchListingDTO> rideSearchListingDTOPagedResourcesAssembler;
+    private DestinationService destinationService;
 
     @PostMapping("users/{userId}/cars/{carId}/rides")
-    EntityModel<Ride> addRide(@RequestBody Ride ride, @PathVariable Long carId) {
-        ride = rideService.save(ride, carId);
-
-        return rideAssembler.toModel(ride);
+    RideDTO addRide(@RequestBody RideDTO ride, @PathVariable Long carId) {
+        return rideService.save(ride, carId);
     }
 
     @GetMapping("/rides/{rideId}")
-    EntityModel<Ride> findById(@PathVariable Long rideId) {
-        Ride ride = rideService.findById(rideId);
-
-        return rideAssembler.toModel(ride);
+    RideDTO findById(@PathVariable Long rideId) {
+        return rideService.findById(rideId);
     }
 
     @PutMapping("/rides/{rideId}")
-    EntityModel<Ride> replace(@RequestBody Ride ride, @PathVariable Long rideId) {
-        ride = rideService.replace(ride, rideId);
-
-        return rideAssembler.toModel(ride);
+    RideDTO replace(@RequestBody RideDTO ride, @PathVariable Long rideId) {
+        return rideService.replace(ride, rideId);
     }
 
     @DeleteMapping("/rides/{rideId}")
@@ -72,38 +45,33 @@ public class RideController {
     }
 
     @GetMapping("/users/{userId}/pastDriverRides")
-    PagedModel<EntityModel<UserRideDTO>> findPastDriverRides(@PathVariable Long userId, Pageable pageable) {
-        Page<UserRideDTO> rides = rideService.findPastDriverRides(userId, pageable);
-        return userRideDTOPagedResourcesAssembler.toModel(rides, userRideDTOAssembler);
+    Page<UserRideDTO> findPastDriverRides(@PathVariable Long userId, Pageable pageable) {
+         return rideService.findPastDriverRides(userId, pageable);
     }
 
     @GetMapping("/users/{userId}/futureDriverRides")
-    PagedModel<EntityModel<UserRideDTO>> findFutureDriverRides(@PathVariable Long userId, Pageable pageable) {
-        Page<UserRideDTO> rides = rideService.findFutureDriverRides(userId, pageable);
-        return userRideDTOPagedResourcesAssembler.toModel(rides, userRideDTOAssembler);
+    Page<UserRideDTO> findFutureDriverRides(@PathVariable Long userId, Pageable pageable) {
+         return rideService.findFutureDriverRides(userId, pageable);
     }
 
     @GetMapping("/users/{userId}/pastPassengerRides")
-    PagedModel<EntityModel<UserRideDTO>> findPastPassengerRides(@PathVariable Long userId, Pageable pageable) {
-        Page<UserRideDTO> rides = rideService.findPastDriverRides(userId, pageable);
-        return userRideDTOPagedResourcesAssembler.toModel(rides, userRideDTOAssembler);
+    Page<UserRideDTO> findPastPassengerRides(@PathVariable Long userId, Pageable pageable) {
+        return rideService.findPastDriverRides(userId, pageable);
     }
 
     @GetMapping("/users/{userId}/futurePassengerRides")
-    PagedModel<EntityModel<UserRideDTO>> findFuturePassengerRides(@PathVariable Long userId, Pageable pageable) {
-        Page<UserRideDTO> rides = rideService.findFutureDriverRides(userId, pageable);
-        return userRideDTOPagedResourcesAssembler.toModel(rides, userRideDTOAssembler);
+    Page<UserRideDTO> findFuturePassengerRides(@PathVariable Long userId, Pageable pageable) {
+        return rideService.findFutureDriverRides(userId, pageable);
     }
 
     @PostMapping("/rides/rideSearchData")
-    PagedModel<EntityModel<RideSearchListingDTO>> rideSearchData(@RequestBody SearchData searchData, Pageable pageable) {
-        Page<RideSearchListingDTO> rides = rideService.getRideSearchListing(searchData, pageable);
-        return rideSearchListingDTOPagedResourcesAssembler.toModel(rides, rideSearchListingDTOModelAssembler);
+    Page<RideSearchListingDTO> rideSearchData(@RequestBody SearchData searchData, Pageable pageable) {
+        return rideService.getRideSearchListing(searchData, pageable);
     }
 
     @PostMapping("/rides/{rideId}/reservation")
-    EntityModel<UserRideDTO> reserve(@RequestBody DestinationData destinationData, @PathVariable Long rideId) {
-        return userRideDTOAssembler.toModel(destinationService.reserve(destinationData.userId, destinationData.destinationFromId, destinationData.destinationToId));
+    UserRideDTO reserve(@RequestBody DestinationData destinationData, @PathVariable Long rideId) {
+        return destinationService.reserve(destinationData.userId, destinationData.destinationFromId, destinationData.destinationToId);
     }
 
     @PostMapping("/rating")

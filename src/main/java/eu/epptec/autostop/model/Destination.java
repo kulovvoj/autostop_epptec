@@ -28,21 +28,17 @@ public class Destination {
     @Column(name = "passenger_count")
     private int passengerCount;
 
-    @OneToOne(mappedBy = "destination", cascade = ALL)
-    @JsonManagedReference(value = "destAddRef")
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "destination", cascade = ALL)
     private Address address;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_ride")
-    @JsonBackReference(value = "rideDestRef")
     private Ride ride;
 
-    @OneToMany(mappedBy = "from")
-    @JsonManagedReference(value = "passFromRef")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "from")
     private List<Passenger> passengersEntering;
 
-    @OneToMany(mappedBy = "to")
-    @JsonManagedReference(value = "passToRef")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "to")
     private List<Passenger> passengersLeaving;
 
     public Destination() {
@@ -63,6 +59,13 @@ public class Destination {
         this.ride = ride;
         this.passengersEntering = passengersEntering;
         this.passengersLeaving = passengersLeaving;
+    }
+
+    public Destination(Long id, Timestamp departureTime, int price, int passengerCount) {
+        this.id = id;
+        this.departureTime = departureTime;
+        this.price = price;
+        this.passengerCount = passengerCount;
     }
 
     public Long getId() {

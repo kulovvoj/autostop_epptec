@@ -31,9 +31,8 @@ public class Address {
     @Column(name = "house_number")
     private Integer houseNumber;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_destination")
-    @JsonBackReference(value = "destAddRef")
     private Destination destination;
 
     public Address() {
@@ -55,6 +54,15 @@ public class Address {
         this.lrNumber = lrNumber;
         this.houseNumber = houseNumber;
         this.destination = destination;
+    }
+
+    public Address(Long id, String city, String zipCode, String street, Integer lrNumber, Integer houseNumber) {
+        this.id = id;
+        this.city = city;
+        this.zipCode = zipCode;
+        this.street = street;
+        this.lrNumber = lrNumber;
+        this.houseNumber = houseNumber;
     }
 
     public Long getId() {

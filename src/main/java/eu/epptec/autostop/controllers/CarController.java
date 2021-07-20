@@ -1,67 +1,44 @@
 package eu.epptec.autostop.controllers;
 
 
+import eu.epptec.autostop.dtos.CarDTO;
 import eu.epptec.autostop.model.Car;
-import eu.epptec.autostop.services.ICarService;
+import eu.epptec.autostop.services.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users/{userId}/cars")
-@ComponentScan(basePackageClasses = {CarModelAssembler.class})
 public class CarController {
     @Autowired
-    private ICarService carService;
-
-    @Autowired
-    private CarModelAssembler assembler;
-
-    @Autowired
-    private PagedResourcesAssembler<Car> pagedResourcesAssembler;
+    private CarService carService;
 
     @PostMapping()
-    EntityModel<Car> addCar(@RequestBody Car car, @PathVariable Long userId) {
-        car = carService.save(car, userId);
-
-        return assembler.toModel(car);
+    CarDTO addCar(@RequestBody CarDTO carDTO, @PathVariable Long userId) {
+        return carService.save(carDTO, userId);
     }
 
     @GetMapping()
-    PagedModel<EntityModel<Car>> findAll(@PathVariable Long userId, Pageable pageable) {
-        Page<Car> cars = carService.findAll(userId, pageable);
-
-        return pagedResourcesAssembler.toModel(cars, assembler);
+    Page<CarDTO> findAll(@PathVariable Long userId, Pageable pageable) {
+        return carService.findAll(userId, pageable);
     }
 
     @GetMapping(value = "/active")
-    PagedModel<EntityModel<Car>> findAllActive(@PathVariable Long userId, Pageable pageable) {
-        Page<Car> cars = carService.findAllActive(userId, pageable);
-        cars.forEach(car -> System.out.println(car.getBrand()));
-        PagedModel<EntityModel<Car>> pm = pagedResourcesAssembler.toModel(cars, assembler);
-        System.out.println("YO");
-        pm.getContent().forEach(car -> System.out.println(car.getContent().getActive()));
-        return pm;
+    Page<CarDTO> findAllActive(@PathVariable Long userId, Pageable pageable) {
+        return carService.findAllActive(userId, pageable);
     }
 
     @GetMapping("/{carId}")
-    EntityModel<Car> findById(@PathVariable Long carId) {
-        Car car = carService.findById(carId);
-
-        return assembler.toModel(car);
+    CarDTO findById(@PathVariable Long carId) {
+        return carService.findById(carId);
     }
 
     @PutMapping("/{carId}")
-    EntityModel<Car> replace(@RequestBody Car car, @PathVariable Long carId) {
-        car = carService.replace(car, carId);
-
-        return assembler.toModel(car);
+    CarDTO replace(@RequestBody CarDTO carDTO, @PathVariable Long carId) {
+        return carService.replace(carDTO, carId);
     }
 
     @DeleteMapping("/{carId}")

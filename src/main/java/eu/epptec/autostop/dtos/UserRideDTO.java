@@ -1,9 +1,9 @@
-package eu.epptec.autostop.model;
+package eu.epptec.autostop.dtos;
 
 import java.sql.Timestamp;
 import java.util.Date;
 
-public class RideSearchListingDTO {
+public class UserRideDTO {
     Long rideId;
     Long fromDestinationId;
     String fromCity;
@@ -14,30 +14,22 @@ public class RideSearchListingDTO {
     Long carId;
     String carBrand;
     String carModel;
-    String carType;
     Integer carProductionYear;
-    Integer rating;
-    Integer capacity;
-    Long price;
 
-    public RideSearchListingDTO() {
+    public UserRideDTO() {
     }
 
-    public RideSearchListingDTO(Long rideId,
-                                Long fromDestinationId,
-                                String fromCity,
-                                Date departureTime,
-                                Long toDestinationId,
-                                String toCity,
-                                Date arrivalTime,
-                                Long carId,
-                                String carBrand,
-                                String carModel,
-                                String carType,
-                                Integer carProductionYear,
-                                Integer rating,
-                                Integer capacity,
-                                Long price) {
+    public UserRideDTO(Long rideId,
+                       Long fromDestinationId,
+                       String fromCity,
+                       Date departureTime,
+                       Long toDestinationId,
+                       String toCity,
+                       Date arrivalTime,
+                       Long carId,
+                       String carBrand,
+                       String carModel,
+                       Integer carProductionYear) {
         this.rideId = rideId;
         this.fromDestinationId = fromDestinationId;
         this.fromCity = fromCity;
@@ -48,11 +40,7 @@ public class RideSearchListingDTO {
         this.carId = carId;
         this.carBrand = carBrand;
         this.carModel = carModel;
-        this.carType = carType;
         this.carProductionYear = carProductionYear;
-        this.rating = rating;
-        this.capacity = capacity;
-        this.price = price;
     }
 
     public Long getRideId() {
@@ -135,43 +123,11 @@ public class RideSearchListingDTO {
         this.carModel = carModel;
     }
 
-    public String getCarType() {
-        return carType;
-    }
-
-    public void setCarType(String carType) {
-        this.carType = carType;
-    }
-
     public Integer getCarProductionYear() {
         return carProductionYear;
     }
 
     public void setCarProductionYear(Integer carProductionYear) {
         this.carProductionYear = carProductionYear;
-    }
-
-    public Integer getRating() {
-        return rating;
-    }
-
-    public void setRating(Integer rating) {
-        this.rating = rating;
-    }
-
-    public Integer getCapacity() {
-        return capacity;
-    }
-
-    public void setCapacity(Integer capacity) {
-        this.capacity = capacity;
-    }
-
-    public Long getPrice() {
-        return price;
-    }
-
-    public void setPrice(Long price) {
-        this.price = price;
     }
 }

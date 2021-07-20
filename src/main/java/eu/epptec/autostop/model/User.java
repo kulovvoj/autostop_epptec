@@ -26,12 +26,10 @@ public class User {
     @Column(name = "phone")
     private String phone;
 
-    @OneToMany(mappedBy = "user")
-    @JsonManagedReference(value = "userCarRef")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<Car> cars;
 
-    @OneToMany(mappedBy = "user")
-    @JsonManagedReference(value = "userPassRef")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<Passenger> passengerOfList;
 
     public User() {}
@@ -51,6 +49,14 @@ public class User {
         this.phone = phone;
         this.cars = cars;
         this.passengerOfList = passengerOfList;
+    }
+
+    public User(Long id, String firstName, String lastName, String email, String phone) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phone = phone;
     }
 
     public Long getId() {

@@ -34,13 +34,11 @@ public class Car {
     @Column(name = "capacity")
     private Integer capacity;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_user")
-    @JsonBackReference(value = "userCarRef")
     private User user;
 
-    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
-    @JsonManagedReference(value = "carRideRef")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "car", cascade = CascadeType.ALL)
     private List<Ride> rides;
 
     public Car() {
@@ -65,6 +63,16 @@ public class Car {
         this.productionYear = productionYear;
         this.capacity = capacity;
         this.user = user;
+    }
+
+    public Car(Long id, Boolean active, String brand, String model, String type, Integer productionYear, Integer capacity) {
+        this.id = id;
+        this.active = active;
+        this.brand = brand;
+        this.model = model;
+        this.type = type;
+        this.productionYear = productionYear;
+        this.capacity = capacity;
     }
 
     public Long getId() {

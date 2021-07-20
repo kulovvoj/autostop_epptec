@@ -20,20 +20,26 @@ public class Passenger {
     @Column(name = "driver_rating")
     private int driverRating;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_user")
-    @JsonBackReference(value = "userPassRef")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_destination_from")
-    @JsonBackReference(value = "passFromRef")
     private Destination from;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_destination_to")
-    @JsonBackReference(value = "passToRef")
     private Destination to;
+
+    public Passenger() {
+    }
+
+    public Passenger(Long id, int passengerRating, int driverRating) {
+        this.id = id;
+        this.passengerRating = passengerRating;
+        this.driverRating = driverRating;
+    }
 
     public Long getId() {
         return id;

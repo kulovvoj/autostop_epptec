@@ -1,8 +1,8 @@
 package eu.epptec.autostop.repositories;
 
 import eu.epptec.autostop.model.Ride;
-import eu.epptec.autostop.model.RideSearchListingDTO;
-import eu.epptec.autostop.model.UserRideDTO;
+import eu.epptec.autostop.dtos.RideSearchListingDTO;
+import eu.epptec.autostop.dtos.UserRideDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,12 +11,10 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
-import java.util.List;
-
 
 @Repository
 public interface RideRepository extends JpaRepository<Ride, Long> {
-    @Query(value = "SELECT new eu.epptec.autostop.model.UserRideDTO(r.id, \n" +
+    @Query(value = "SELECT new eu.epptec.autostop.dtos.UserRideDTO(r.id, \n" +
             "                                                       dFirst.id, \n" +
             "                                                       dFirst.address.city, \n" +
             "                                                       dFirst.departureTime, \n" +
@@ -45,7 +43,7 @@ public interface RideRepository extends JpaRepository<Ride, Long> {
             "ORDER BY dFirst.departureTime DESC")
     Page<UserRideDTO> findPastDriverRides(@Param("userId") Long userId, @Param("now") Timestamp now, Pageable pageable);
 
-    @Query(value = "SELECT new eu.epptec.autostop.model.UserRideDTO(r.id, \n" +
+    @Query(value = "SELECT new eu.epptec.autostop.dtos.UserRideDTO(r.id, \n" +
             "                                                       dFirst.id, \n" +
             "                                                       dFirst.address.city, \n" +
             "                                                       dFirst.departureTime, \n" +
@@ -74,7 +72,7 @@ public interface RideRepository extends JpaRepository<Ride, Long> {
             "ORDER BY dFirst.departureTime ASC")
     Page<UserRideDTO> findFutureDriverRides(@Param("userId") Long userId, @Param("now") Timestamp now, Pageable pageable);
 
-    @Query(value = "SELECT new eu.epptec.autostop.model.UserRideDTO(r.id, \n" +
+    @Query(value = "SELECT new eu.epptec.autostop.dtos.UserRideDTO(r.id, \n" +
             "                                                       dFrom.id, \n" +
             "                                                       dFrom.address.city, \n" +
             "                                                       dFrom.departureTime, \n" +
@@ -97,7 +95,7 @@ public interface RideRepository extends JpaRepository<Ride, Long> {
             "ORDER BY dFrom.departureTime ASC")
     Page<UserRideDTO> findPastPassengerRides(@Param("userId") Long userId, @Param("now") Timestamp now, Pageable pageable);
 
-    @Query(value = "SELECT new eu.epptec.autostop.model.UserRideDTO(r.id, \n" +
+    @Query(value = "SELECT new eu.epptec.autostop.dtos.UserRideDTO(r.id, \n" +
             "                                                       dFrom.id, \n" +
             "                                                       dFrom.address.city, \n" +
             "                                                       dFrom.departureTime, \n" +
@@ -120,7 +118,7 @@ public interface RideRepository extends JpaRepository<Ride, Long> {
             "ORDER BY dFrom.departureTime DESC")
     Page<UserRideDTO> findFuturePassengerRides(@Param("userId") Long userId, @Param("now") Timestamp now, Pageable pageable);
 
-    @Query(value = "SELECT new eu.epptec.autostop.model.RideSearchListingDTO(r.id, \n" +
+    @Query(value = "SELECT new eu.epptec.autostop.dtos.RideSearchListingDTO(r.id, \n" +
             "                                                               dFrom.id, \n" +
             "                                                               aFrom.city, \n" +
             "                                                               dFrom.departureTime, \n" +
@@ -162,7 +160,7 @@ public interface RideRepository extends JpaRepository<Ride, Long> {
                                                              @Param("departureTime") Timestamp departureTime,
                                                              Pageable pageable);
 
-    @Query(value = "SELECT new eu.epptec.autostop.model.RideSearchListingDTO(r.id, \n" +
+    @Query(value = "SELECT new eu.epptec.autostop.dtos.RideSearchListingDTO(r.id, \n" +
             "                                                               dFrom.id, \n" +
             "                                                               aFrom.city, \n" +
             "                                                               dFrom.departureTime, \n" +
@@ -205,7 +203,7 @@ public interface RideRepository extends JpaRepository<Ride, Long> {
                                                            Pageable pageable);
 
 
-    @Query(value = "SELECT new eu.epptec.autostop.model.UserRideDTO(r.id, \n" +
+    @Query(value = "SELECT new eu.epptec.autostop.dtos.UserRideDTO(r.id, \n" +
             "                                                       dFrom.id, \n" +
             "                                                       dFrom.address.city, \n" +
             "                                                       dFrom.departureTime, \n" +
