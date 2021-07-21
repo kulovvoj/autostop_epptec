@@ -2,18 +2,17 @@ package eu.epptec.autostop.controllers;
 
 import eu.epptec.autostop.dtos.RatingDTO;
 import eu.epptec.autostop.dtos.UserDTO;
-import eu.epptec.autostop.model.User;
 import eu.epptec.autostop.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
-import java.util.List;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
 @RequestMapping("/users")
@@ -22,6 +21,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping(consumes = "application/json", produces = "application/json")
+    @ResponseStatus(CREATED)
     UserDTO addUser(@RequestBody UserDTO userDTO) {
         return userService.save(userDTO);
     }

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import javax.persistence.*;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -119,5 +120,18 @@ public class Address {
 
     public void setDestination(Destination destination) {
         this.destination = destination;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Address address = (Address) o;
+        return Objects.equals(id, address.id) && Objects.equals(city, address.city) && Objects.equals(zipCode, address.zipCode) && Objects.equals(street, address.street) && Objects.equals(lrNumber, address.lrNumber) && Objects.equals(houseNumber, address.houseNumber) && Objects.equals(destination, address.destination);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, city, zipCode, street, lrNumber, houseNumber, destination);
     }
 }

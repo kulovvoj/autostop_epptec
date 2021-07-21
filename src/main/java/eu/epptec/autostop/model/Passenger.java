@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 
+import java.util.Objects;
+
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -87,5 +89,18 @@ public class Passenger {
 
     public void setDriverRating(int driverRating) {
         this.driverRating = driverRating;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Passenger passenger = (Passenger) o;
+        return passengerRating == passenger.passengerRating && driverRating == passenger.driverRating && Objects.equals(id, passenger.id) && Objects.equals(user, passenger.user) && Objects.equals(from, passenger.from) && Objects.equals(to, passenger.to);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, passengerRating, driverRating, user, from, to);
     }
 }

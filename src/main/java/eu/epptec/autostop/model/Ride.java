@@ -3,6 +3,7 @@ package eu.epptec.autostop.model;
 import javax.persistence.*;
 
 import java.util.List;
+import java.util.Objects;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -74,5 +75,18 @@ public class Ride {
 
     public void setCar(Car car) {
         this.car = car;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Ride ride = (Ride) o;
+        return Objects.equals(id, ride.id) && Objects.equals(capacity, ride.capacity) && Objects.equals(destinations, ride.destinations) && Objects.equals(car, ride.car);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, capacity, destinations, car);
     }
 }

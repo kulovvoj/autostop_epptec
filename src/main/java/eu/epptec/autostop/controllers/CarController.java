@@ -10,6 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static org.springframework.http.HttpStatus.CREATED;
+
 @RestController
 @RequestMapping("/users/{userId}/cars")
 public class CarController {
@@ -17,6 +19,7 @@ public class CarController {
     private CarService carService;
 
     @PostMapping()
+    @ResponseStatus(CREATED)
     CarDTO addCar(@RequestBody CarDTO carDTO, @PathVariable Long userId) {
         return carService.save(carDTO, userId);
     }

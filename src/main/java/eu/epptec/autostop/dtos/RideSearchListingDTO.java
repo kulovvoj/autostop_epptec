@@ -2,6 +2,7 @@ package eu.epptec.autostop.dtos;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.Objects;
 
 public class RideSearchListingDTO {
     Long rideId;
@@ -173,5 +174,18 @@ public class RideSearchListingDTO {
 
     public void setPrice(Long price) {
         this.price = price;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RideSearchListingDTO that = (RideSearchListingDTO) o;
+        return Objects.equals(rideId, that.rideId) && Objects.equals(fromDestinationId, that.fromDestinationId) && Objects.equals(fromCity, that.fromCity) && Objects.equals(departureTime, that.departureTime) && Objects.equals(toDestinationId, that.toDestinationId) && Objects.equals(toCity, that.toCity) && Objects.equals(arrivalTime, that.arrivalTime) && Objects.equals(carId, that.carId) && Objects.equals(carBrand, that.carBrand) && Objects.equals(carModel, that.carModel) && Objects.equals(carType, that.carType) && Objects.equals(carProductionYear, that.carProductionYear) && Objects.equals(rating, that.rating) && Objects.equals(capacity, that.capacity) && Objects.equals(price, that.price);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(rideId, fromDestinationId, fromCity, departureTime, toDestinationId, toCity, arrivalTime, carId, carBrand, carModel, carType, carProductionYear, rating, capacity, price);
     }
 }

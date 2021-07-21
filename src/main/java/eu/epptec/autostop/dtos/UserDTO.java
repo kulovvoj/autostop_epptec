@@ -2,6 +2,8 @@ package eu.epptec.autostop.dtos;
 
 import eu.epptec.autostop.model.User;
 
+import java.util.Objects;
+
 public class UserDTO {
     private Long id;
     private String firstName;
@@ -70,5 +72,18 @@ public class UserDTO {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserDTO userDTO = (UserDTO) o;
+        return Objects.equals(id, userDTO.id) && Objects.equals(firstName, userDTO.firstName) && Objects.equals(lastName, userDTO.lastName) && Objects.equals(email, userDTO.email) && Objects.equals(phone, userDTO.phone);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, lastName, email, phone);
     }
 }

@@ -2,6 +2,8 @@ package eu.epptec.autostop.dtos;
 
 import eu.epptec.autostop.model.Passenger;
 
+import java.util.Objects;
+
 public class PassengerDTO {
     private Long id;
     private int passengerRating;
@@ -48,5 +50,18 @@ public class PassengerDTO {
 
     public void setDriverRating(int driverRating) {
         this.driverRating = driverRating;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PassengerDTO that = (PassengerDTO) o;
+        return passengerRating == that.passengerRating && driverRating == that.driverRating && Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, passengerRating, driverRating);
     }
 }

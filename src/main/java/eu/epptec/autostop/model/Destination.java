@@ -7,6 +7,7 @@ import javax.persistence.*;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Objects;
 
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.GenerationType.IDENTITY;
@@ -130,5 +131,18 @@ public class Destination {
 
     public void setPassengersLeaving(List<Passenger> passengersLeaving) {
         this.passengersLeaving = passengersLeaving;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Destination that = (Destination) o;
+        return price == that.price && passengerCount == that.passengerCount && Objects.equals(id, that.id) && Objects.equals(departureTime, that.departureTime) && Objects.equals(address, that.address) && Objects.equals(ride, that.ride) && Objects.equals(passengersEntering, that.passengersEntering) && Objects.equals(passengersLeaving, that.passengersLeaving);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, departureTime, price, passengerCount, address, ride, passengersEntering, passengersLeaving);
     }
 }

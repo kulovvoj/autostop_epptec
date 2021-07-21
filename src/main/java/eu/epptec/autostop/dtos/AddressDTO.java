@@ -2,6 +2,8 @@ package eu.epptec.autostop.dtos;
 
 import eu.epptec.autostop.model.Address;
 
+import java.util.Objects;
+
 public class AddressDTO {
     private Long id;
     private String city;
@@ -81,5 +83,18 @@ public class AddressDTO {
 
     public void setHouseNumber(Integer houseNumber) {
         this.houseNumber = houseNumber;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AddressDTO that = (AddressDTO) o;
+        return Objects.equals(id, that.id) && Objects.equals(city, that.city) && Objects.equals(zipCode, that.zipCode) && Objects.equals(street, that.street) && Objects.equals(lrNumber, that.lrNumber) && Objects.equals(houseNumber, that.houseNumber);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, city, zipCode, street, lrNumber, houseNumber);
     }
 }

@@ -2,6 +2,7 @@ package eu.epptec.autostop.dtos;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.Objects;
 
 public class UserRideDTO {
     Long rideId;
@@ -129,5 +130,18 @@ public class UserRideDTO {
 
     public void setCarProductionYear(Integer carProductionYear) {
         this.carProductionYear = carProductionYear;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserRideDTO that = (UserRideDTO) o;
+        return Objects.equals(rideId, that.rideId) && Objects.equals(fromDestinationId, that.fromDestinationId) && Objects.equals(fromCity, that.fromCity) && Objects.equals(departureTime, that.departureTime) && Objects.equals(toDestinationId, that.toDestinationId) && Objects.equals(toCity, that.toCity) && Objects.equals(arrivalTime, that.arrivalTime) && Objects.equals(carId, that.carId) && Objects.equals(carBrand, that.carBrand) && Objects.equals(carModel, that.carModel) && Objects.equals(carProductionYear, that.carProductionYear);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(rideId, fromDestinationId, fromCity, departureTime, toDestinationId, toCity, arrivalTime, carId, carBrand, carModel, carProductionYear);
     }
 }

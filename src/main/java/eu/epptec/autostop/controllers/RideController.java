@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 
+import static org.springframework.http.HttpStatus.CREATED;
+
 @RestController
 public class RideController {
     @Autowired
@@ -23,6 +25,7 @@ public class RideController {
     private DestinationService destinationService;
 
     @PostMapping("users/{userId}/cars/{carId}/rides")
+    @ResponseStatus(CREATED)
     RideDTO addRide(@RequestBody RideDTO ride, @PathVariable Long carId) {
         return rideService.save(ride, carId);
     }

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -153,5 +154,18 @@ public class Car {
 
     public void setTrips(List<Ride> rides) {
         this.rides = rides;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Car car = (Car) o;
+        return Objects.equals(id, car.id) && Objects.equals(active, car.active) && Objects.equals(brand, car.brand) && Objects.equals(model, car.model) && Objects.equals(type, car.type) && Objects.equals(productionYear, car.productionYear) && Objects.equals(capacity, car.capacity) && Objects.equals(user, car.user) && Objects.equals(rides, car.rides);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, active, brand, model, type, productionYear, capacity, user, rides);
     }
 }

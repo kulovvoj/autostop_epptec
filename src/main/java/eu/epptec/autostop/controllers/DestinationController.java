@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static org.springframework.http.HttpStatus.CREATED;
+
 @RestController
 @RequestMapping("/rides/{rideId}/destinations")
 public class DestinationController {
@@ -14,6 +16,7 @@ public class DestinationController {
     private DestinationService destinationService;
 
     @PostMapping()
+    @ResponseStatus(CREATED)
     DestinationDTO addDestination(@RequestBody DestinationDTO destinationDTO, @PathVariable Long rideId) {
         return destinationService.save(destinationDTO, rideId);
     }

@@ -2,6 +2,8 @@ package eu.epptec.autostop.dtos;
 
 import eu.epptec.autostop.model.Car;
 
+import java.util.Objects;
+
 public class CarDTO {
     private Long id;
     private Boolean active;
@@ -92,5 +94,18 @@ public class CarDTO {
 
     public void setCapacity(Integer capacity) {
         this.capacity = capacity;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CarDTO carDTO = (CarDTO) o;
+        return Objects.equals(id, carDTO.id) && Objects.equals(active, carDTO.active) && Objects.equals(brand, carDTO.brand) && Objects.equals(model, carDTO.model) && Objects.equals(type, carDTO.type) && Objects.equals(productionYear, carDTO.productionYear) && Objects.equals(capacity, carDTO.capacity);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, active, brand, model, type, productionYear, capacity);
     }
 }
