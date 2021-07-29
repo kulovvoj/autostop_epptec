@@ -1,21 +1,21 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import UserForm from './forms/UserForm'
+import LoginForm from './forms/LoginForm'
 
 export default function LoginPage() {
-    const usernameState = useSelector(state => state.username)
+    const userState = useSelector(state => state.user)
 
     return (
         <div>
             {
-                usernameState.username === undefined ? 
+                userState === null ? 
                     <>
                         <h2>Login</h2>
-                        <UserForm />
+                        <LoginForm />
                     </>
                     : 
                     <>
-                        {usernameState.username} logged in
+                        {userState.username} logged in
                     </>
             }
         </div>

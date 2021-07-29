@@ -6,6 +6,7 @@ import java.util.Objects;
 
 public class UserDTO {
     private Long id;
+    private String username;
     private String firstName;
     private String lastName;
     private String email;
@@ -14,8 +15,9 @@ public class UserDTO {
     public UserDTO() {
     }
 
-    public UserDTO(Long id, String firstName, String lastName, String email, String phone) {
+    public UserDTO(Long id, String username, String firstName, String lastName, String email, String phone) {
         this.id = id;
+        this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -24,6 +26,7 @@ public class UserDTO {
 
     public UserDTO(User user) {
         this.id = user.getId();
+        this.username = user.getUsername();
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.email = user.getEmail();
@@ -31,7 +34,7 @@ public class UserDTO {
     }
 
     public User toEntity() {
-        return new User(id, firstName, lastName, email, phone);
+        return new User(id, username, firstName, lastName, email, phone);
     }
 
     public Long getId() {
@@ -40,6 +43,14 @@ public class UserDTO {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getFirstName() {

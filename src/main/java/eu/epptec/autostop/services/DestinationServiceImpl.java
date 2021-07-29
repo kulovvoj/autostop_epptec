@@ -69,7 +69,7 @@ public class DestinationServiceImpl implements DestinationService {
         Passenger passenger = new Passenger();
         passenger.setFrom(destinationRepository.findById(fromId).orElseThrow(() -> new DestinationNotFoundException(fromId)));
         passenger.setTo(destinationRepository.findById(toId).orElseThrow(() -> new DestinationNotFoundException(toId)));
-        passenger.setUser(userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId)));
+        passenger.setUser(userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException()));
         passengerRepository.save(passenger);
         // Return userRideDTO
         return rideRepository.getUserRideDTOByPassenger(userId, fromId, toId);

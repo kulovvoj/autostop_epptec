@@ -6,7 +6,7 @@ import eu.epptec.autostop.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,6 +34,12 @@ public class UserController {
     @GetMapping("/{id}")
     UserDTO findById(@PathVariable Long id) {
         return userService.findById(id);
+    }
+
+    @PostMapping("/login")
+    UserDTO findByUsername(@RequestBody String username) {
+        System.out.println(username);
+        return userService.findByUsername("dala");
     }
 
     @GetMapping("/rating")

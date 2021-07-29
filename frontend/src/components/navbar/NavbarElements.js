@@ -55,21 +55,6 @@ export const NavLogo = styled(Link)`
   }
 `
 
-export const Bars = styled(FaBars)`
-  display: none;
-  color: #fff;
-
-  @media screen and (max-width: 768px) {
-    display: block;
-    position: absolute;
-    top: 40px;
-    right: 50px;
-    transform: translate(-100%, 75%);
-    font-size: 1.8rem;
-    cursor: pointer;
-  }
-`
-
 export const NavButtonLink = styled(Link)`
   color:  ${props => props.primary ? "#ccc" : "#4f3b48"};
   background-color:  ${props => props.primary ? "#4f3b48" : "#ccc"};
@@ -106,8 +91,4 @@ export const NavMenu = styled.div`
   display: flex;
   align-items: center;
   margin-right: 24px;
-
-  @media screen and (max-width: 768px) {
-    display: none;
-  }
 `

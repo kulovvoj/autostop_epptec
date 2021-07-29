@@ -32,18 +32,18 @@ public class UserControllerTest {
 
     @Before
     public void init() {
-        UserDTO userDTOInput = new UserDTO(null, "Vojtěch", "Kulovaný", "v.k@seznam.cz", "123456789");
+        UserDTO userDTOInput = new UserDTO(null, "dala", "Vojtěch", "Kulovaný", "v.k@seznam.cz", "123456789");
         UserDTO userDTOOutput = userDTOInput;
         userDTOOutput.setId(1L);
 
         when(userService.save(userDTOInput)).thenReturn(userDTOOutput);
-        doThrow(new UserNotFoundException(3L)).when(userService).deleteById(3L);
+        doThrow(new UserNotFoundException()).when(userService).deleteById(3L);
         doNothing().when(userService).deleteById(2L);
     }
 
     @Test
     public void addUserTest() throws Exception {
-        UserDTO userDTO = new UserDTO(null, "Vojtěch", "Kulovaný", "v.k@seznam.cz", "123456789");
+        UserDTO userDTO = new UserDTO(null, "dala", "Vojtěch", "Kulovaný", "v.k@seznam.cz", "123456789");
 
         mockMvc.perform(post("/users")
                 .content(new ObjectMapper().writeValueAsString(userDTO))
@@ -54,7 +54,7 @@ public class UserControllerTest {
 
     @Test
     public void deleteUserTest() throws Exception {
-        UserDTO userDTO = new UserDTO(null, "Vojtěch", "Kulovaný", "v.k@seznam.cz", "123456789");
+        UserDTO userDTO = new UserDTO(null, "dala", "Vojtěch", "Kulovaný", "v.k@seznam.cz", "123456789");
 
         mockMvc.perform(delete("/users/3")
                 .accept(MediaType.APPLICATION_JSON))

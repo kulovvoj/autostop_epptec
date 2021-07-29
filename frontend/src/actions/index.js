@@ -1,6 +1,15 @@
-export default function setUsername(username) {
+export function loginAction(user) {
     return {
-        type: 'USERNAME',
-        username
+        type: 'LOGIN',
+        user: user,
+        isLogged: true
+    }
+}
+
+export function logoutAction() {
+    return {
+        type: 'LOGOUT',
+        user: null,
+        isLogged: false
     }
 }

@@ -1,9 +1,11 @@
-import { usernameReducer } from "./usernameReducer";
+import { userReducer } from "./userReducer";
+import { isLoggedReducer } from "./isLoggedReducer";
 import { combineReducers } from "redux";
 import { reducer as formReducer } from "redux-form"
 
 const combinedReducers = combineReducers({
-    username: usernameReducer,
+    user: userReducer,
+    isLogged: isLoggedReducer,
     form: formReducer
 })
 

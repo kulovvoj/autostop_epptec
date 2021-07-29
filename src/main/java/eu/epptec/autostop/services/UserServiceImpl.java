@@ -22,7 +22,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO findById(Long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException(id));
+                .orElseThrow(() -> new UserNotFoundException());
+        return new UserDTO(user);
+    }
+
+    @Override
+    public UserDTO findByUsername(String username) {
+        User user = userRepository.findByUsernameIgnoreCase(username);
+        if (user == null) {
+            throw new UserNotFoundException();
+        }
         return new UserDTO(user);
     }
 

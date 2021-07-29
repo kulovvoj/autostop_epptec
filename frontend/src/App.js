@@ -1,15 +1,13 @@
 import './App.css';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
-import LoginPage from './pages/LoginPage';
-import ProfilePage from './pages/ProfilePage';
-import CarListPage from './pages/CarListPage';
-import RideListPage from './pages/RideListPage';
-import MainPage from './pages/MainPage';
+import LoginPage from './components/pages/LoginPage';
+import ProfilePage from './components/pages/ProfilePage';
+import CarListPage from './components/pages/CarListPage';
+import RideListPage from './components/pages/RideListPage';
+import MainPage from './components/pages/MainPage';
 import Navbar from './components/navbar/Navbar'
 
 function App() {
-
-  
   return (
     <Router>
       <div>

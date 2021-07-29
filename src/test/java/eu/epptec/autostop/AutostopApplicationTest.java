@@ -39,7 +39,7 @@ class AutostopApplicationTest {
     void testAddUser() throws URISyntaxException {
         String baseUrl = "http://localhost:" + randomServerPort + "/users";
         URI uri = new URI(baseUrl);
-        User user = new User("Vojtěch", "Kulovaný", "vojtech.kulovany@seznam.cz", "608626271");
+        User user = new User("dala", "Vojtěch", "Kulovaný", "vojtech.kulovany@seznam.cz", "608626271");
 
         HttpEntity<User> userRequest = new HttpEntity<>(user);
 
@@ -71,7 +71,7 @@ class AutostopApplicationTest {
         // -------------
         String baseUrl = "http://localhost:" + randomServerPort + "/users";
         URI uri = new URI(baseUrl);
-        User user = new User("Vojtěch", "Kulovaný", "vojtech.kulovany@seznam.cz", "608626271");
+        User user = new User("dala", "Vojtěch", "Kulovaný", "vojtech.kulovany@seznam.cz", "608626271");
 
         HttpEntity<User> userRequest = new HttpEntity<>(user);
 

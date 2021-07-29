@@ -1,14 +1,10 @@
-import React, {useEffect} from 'react'
+import React, { useEffect } from 'react'
 import { Nav, NavLogo, NavLink, Bars, NavMenu, NavButtonLink, NavButton } from './NavbarElements'
 import { useDispatch, useSelector } from 'react-redux'
-import setUsername from '../../actions'
-
-function logout(dispatch) {
-  dispatch(setUsername(''))
-}
+import { logoutAction } from '../../actions'
 
 export default function Navbar() {
-  const username = useSelector(state => state.username)
+  const userState = useSelector(state => state.user)
   const dispatch = useDispatch()
   return (
     <>
@@ -16,7 +12,6 @@ export default function Navbar() {
         <NavLogo to="/">
           {"<d/>"}
         </NavLogo>
-        <Bars />
         <NavMenu>
           <NavLink to="/about">
             About
@@ -26,7 +21,7 @@ export default function Navbar() {
             Contact
           </NavLink>
           {
-            username === "" ?
+            userState === null ?
               <>
                 <NavButtonLink to="/login">
                   Log In
@@ -38,7 +33,7 @@ export default function Navbar() {
               </> 
               :
               <>
-                <NavButton onClick={() => logout(dispatch)}>
+                <NavButton onClick={() => dispatch(logoutAction())}>
                   Log Out
                 </NavButton>
               </>

@@ -1,9 +1,6 @@
 package eu.epptec.autostop.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
@@ -14,6 +11,9 @@ public class User {
     @GeneratedValue
     @Column(name = "id")
     private Long id;
+
+    @Column(name = "username")
+    private String username;
 
     @Column(name = "first_name")
     private String firstName;
@@ -35,15 +35,17 @@ public class User {
 
     public User() {}
 
-    public User(String firstName, String lastName, String email, String phone) {
+    public User(String username, String firstName, String lastName, String email, String phone) {
+        this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
     }
 
-    public User(Long id, String firstName, String lastName, String email, String phone, List<Car> cars, List<Passenger> passengerOfList) {
+    public User(Long id, String username, String firstName, String lastName, String email, String phone, List<Car> cars, List<Passenger> passengerOfList) {
         this.id = id;
+        this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -52,8 +54,9 @@ public class User {
         this.passengerOfList = passengerOfList;
     }
 
-    public User(Long id, String firstName, String lastName, String email, String phone) {
+    public User(Long id, String username, String firstName, String lastName, String email, String phone) {
         this.id = id;
+        this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -66,6 +69,14 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getFirstName() {
@@ -121,11 +132,11 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(email, user.email) && Objects.equals(phone, user.phone) && Objects.equals(cars, user.cars) && Objects.equals(passengerOfList, user.passengerOfList);
+        return Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(email, user.email) && Objects.equals(phone, user.phone) && Objects.equals(cars, user.cars) && Objects.equals(passengerOfList, user.passengerOfList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, email, phone, cars, passengerOfList);
+        return Objects.hash(id, username, firstName, lastName, email, phone, cars, passengerOfList);
     }
 }

@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Input({errorMessage, ...props}) {
+export default function LoginInput({errorMessage, ...props}) {
     return (
         <div className="input-text">
             <input {...props} /><br/>

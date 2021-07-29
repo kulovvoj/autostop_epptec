@@ -34,8 +34,8 @@ public class UserServiceMockTest {
 
     @Test
     public void testFindById_usingMock() {
-        User testUser = new User(1L, "V", "K", "v.k@seznam.cz", "123456789");
-        UserDTO expectedUserDTO = new UserDTO(1L, "V", "K", "v.k@seznam.cz", "123456789");
+        User testUser = new User(1L, "vk", "V", "K", "v.k@seznam.cz", "123456789");
+        UserDTO expectedUserDTO = new UserDTO(1L, "vk", "V", "K", "v.k@seznam.cz", "123456789");
 
         when(userRepository.findById(testUser.getId())).thenReturn(Optional.of(testUser));
 

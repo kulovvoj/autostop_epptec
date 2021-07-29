@@ -17,4 +17,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "LEFT JOIN d.passengersEntering p \n" +
             "WHERE u.id = :userId")
     RatingDTO getRating(@Param("userId") Long id);
+    User findByUsernameIgnoreCase(String username);
 }

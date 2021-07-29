@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface UserService {
     UserDTO findById(Long id);
+    UserDTO findByUsername(String username);
     UserDTO save(UserDTO userDTO);
     Page<UserDTO> findAll(Pageable pageable);
     RatingDTO getRating(Long id);
